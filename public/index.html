@@ -9,6 +9,50 @@
     <title>TO DO</title>
 </head>
 <body>
+<div class="w-full">
+    <header class="w-full bg-violet-800 flex justify-between items-center p-3">
+        <div class="flex items-center gap-2">
+            <img src="./assets/Image/list-ul-alt-svgrepo-com.svg" alt="logo" class="w-7 ">
+            <h1 class="text-white text-xl">My To Do Tasks</h1>
+        </div>
+        <div class="flex items-center gap-1.5">
+            <div class="bg-purple-700 p-1  text-white hidden sm:flex rounded-sm  items-center gap-1">
+                <img src="./assets/Image/search-alt-1-svgrepo-com.svg" alt="search" class="w-4">
+                <input type="text" placeholder="Search" class="outline-0 border-0 bg-transparent text-md">
+            </div>
+            <button><img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6"></button>
+            <button><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6"></button>
+        </div>
+    </header>
 
+    <main class="w-full">
+        <table class="w-full  text-sm sm:text-md border-collapse p-2">
+            <thead class="font-semibold">
+            <tr>
+                <th class="border border-gray-500 p-2">Task Name</th>
+                <th class="border border-gray-500 p-2">Priority</th>
+                <th class="border border-gray-500 p-2">Status</th>
+                <th class="border border-gray-500 p-2 hidden  sm:table-cell">DeadLine</th>
+                <th class="border border-gray-500 p-2">Operation</th>
+            </tr>
+            </thead>
+            <tbody class="text-center ">
+            <tr>
+                <td class="border border-gray-500 p-2">Walk the Dog</td>
+                <td class="border border-gray-500 p-2"><span class="px-2 py-1.5 bg-gray-400 rounded-2xl font-semibold text-xs">Low</span></td>
+                <td class="border border-gray-500 p-2"><span class="px-2 py-1.5 bg-red-700  rounded-2xl text-white font-semibold text-xs">ToDO</span></td>
+                <td class="border border-gray-500 p-2 hidden sm:table-cell"><span class="px-2 py-1 border-2 border-blue-300 rounded-2xl">1403/9/12</span></td>
+                <td class="border border-gray-500 p-2">
+                    <button class="bg-red-600 p-1 rounded-md "><img src="./assets/Image/delete-svgrepo-com.svg" alt="delete" class=" w-4"></button>
+                    <button class="bg-blue-600 p-1 rounded-md "><img src="./assets/Image/pen-f-svgrepo-com.svg" alt="edit" class="w-4"></button>
+                    <button class="bg-gray-500 p-1 rounded-md "><img src="./assets/Image/eye-svgrepo-com.svg" alt="see" class="w-4" ></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+
+</div>
 </body>
 </html>
