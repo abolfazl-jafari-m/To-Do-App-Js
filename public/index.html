@@ -39,13 +39,19 @@
             <tbody class="text-center ">
             <tr>
                 <td class="border border-gray-500 p-2">Walk the Dog</td>
-                <td class="border border-gray-500 p-2"><span class="px-2 py-1.5 bg-gray-400 rounded-2xl font-semibold text-xs">Low</span></td>
-                <td class="border border-gray-500 p-2"><span class="px-2 py-1.5 bg-red-700  rounded-2xl text-white font-semibold text-xs">ToDO</span></td>
-                <td class="border border-gray-500 p-2 hidden sm:table-cell"><span class="px-2 py-1 border-2 border-blue-300 rounded-2xl">1403/9/12</span></td>
+                <td class="border border-gray-500 p-2"><span
+                        class="px-2 py-1.5 bg-gray-400 rounded-2xl font-semibold text-xs">Low</span></td>
+                <td class="border border-gray-500 p-2"><span
+                        class="px-2 py-1.5 bg-red-700  rounded-2xl text-white font-semibold text-xs">ToDO</span></td>
+                <td class="border border-gray-500 p-2 hidden sm:table-cell"><span
+                        class="px-2 py-1 border-2 border-blue-300 rounded-2xl">1403/9/12</span></td>
                 <td class="border border-gray-500 p-2">
-                    <button class="bg-red-600 p-1 rounded-md "><img src="./assets/Image/delete-svgrepo-com.svg" alt="delete" class=" w-4"></button>
-                    <button class="bg-blue-600 p-1 rounded-md "><img src="./assets/Image/pen-f-svgrepo-com.svg" alt="edit" class="w-4"></button>
-                    <button class="bg-gray-500 p-1 rounded-md "><img src="./assets/Image/eye-svgrepo-com.svg" alt="see" class="w-4" ></button>
+                    <button class="bg-red-600 p-1 rounded-md "><img src="./assets/Image/delete-svgrepo-com.svg"
+                                                                    alt="delete" class=" w-4"></button>
+                    <button class="bg-blue-600 p-1 rounded-md "><img src="./assets/Image/pen-f-svgrepo-com.svg"
+                                                                     alt="edit" class="w-4"></button>
+                    <button class="bg-gray-500 p-1 rounded-md "><img src="./assets/Image/eye-svgrepo-com.svg" alt="see"
+                                                                     class="w-4"></button>
                 </td>
             </tr>
             </tbody>
@@ -54,7 +60,7 @@
     <div class="flex justify-end m-3 text-xs">
         <div class="flex justify-between w-full sm:w-[50%] items-center md:w-[40%] ">
             <div>
-                <label for="pagination" >Rows Per Page :</label>
+                <label for="pagination">Rows Per Page :</label>
                 <select id="pagination" class="outline-0 border-0 px-3">
                     <option>ALL</option>
                     <option>5</option>
@@ -73,7 +79,62 @@
         </div>
     </div>
 
-
+    <div id="modal"
+         class="hidden fixed bg-indigo-700 p-8 flex flex-col justify-center items-center top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-1/2">
+        <form class="flex flex-col justify-center items-center gap-8 w-full text-white">
+            <div class="flex justify-between w-full items-center">
+                <label for="taskName" class=" font-semibold">Name</label>
+                <input type="text" placeholder="Please Enter Name of Your Task" id="taskName" name="taskName"
+                       class="w-[80%] sm:w-[60%] bg-transparent border border-gray-400 p-2 outline-0 rounded-md  shadow-md">
+            </div>
+            <div class="flex justify-between w-full items-center">
+                <div class=" font-semibold">
+                    <label>Priority</label>
+                </div>
+                <div class="flex gap-10 items-center justify-center w-[80%] sm:w-[60%]">
+                    <div>
+                        <label for="lowPriority">Low</label>
+                        <input type="radio" id="lowPriority" name="priority">
+                    </div>
+                    <div>
+                        <label for="mediumPriority">Medium</label>
+                        <input type="radio" id="mediumPriority" name="priority">
+                    </div>
+                    <div>
+                        <label for="highPriority">High</label>
+                        <input type="radio" id="highPriority" name="priority">
+                    </div>
+                </div>
+            </div>
+            <div class="w-full flex justify-between">
+                <label for="status" class="font-semibold">Status</label>
+                <select id="status" name="status"
+                        class="w-4/5 sm:w-3/5 outline-0 border border-gray-400 rounded-md bg-transparent shadow-xl  p-2">
+                    <option class="text-black" value="toDo">ToDo</option>
+                    <option class="text-black " value="Doing">Doing</option>
+                    <option class="text-black " value="Done">Done</option>
+                </select>
+            </div>
+            <div class="w-full flex justify-between ">
+                <label for="deadLine" class="font-semibold">DeadLine</label>
+                <input type="datetime-local" id="deadLine" name="deadLine"
+                       class="w-4/5 sm:w-3/5 outline-0 border-gray-400 border rounded-md p-2 bg-transparent shadow-xl">
+            </div>
+            <div class="flex gap-10 items-center">
+                <button type="submit" id="addTaskBtn"
+                        class="bg-green-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 transition-all ease-in duration-100">
+                    Save
+                </button>
+                <button id="closeModalBtn"
+                        class="bg-red-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-600 transition-all ease-in duration-100">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+    <div id="overlay" class=" hidden bg-gray-600 opacity-65 z-10 fixed top-0 left-0 w-full h-full">
+    </div>
 </div>
+<script src="../src/script.js"></script>
 </body>
 </html>
