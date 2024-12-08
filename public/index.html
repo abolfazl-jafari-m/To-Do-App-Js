@@ -21,7 +21,8 @@
                 <input type="text" placeholder="Search" class="outline-0 border-0 bg-transparent text-md">
             </div>
             <button><img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6"></button>
-            <button onclick="showModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6"></button>
+            <button onclick="showModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6">
+            </button>
         </div>
     </header>
 
@@ -126,8 +127,6 @@
                            class=" w-full outline-0 border-gray-400 border rounded-md p-2 bg-transparent shadow-xl">
                     <span id="date-message" class="text-red-400 text-xs min-h-2 w-full"></span>
                 </div>
-
-
             </div>
             <div class="flex gap-10 items-center">
                 <button type="submit" id="addTaskBtn"
@@ -145,10 +144,14 @@
             </div>
         </form>
     </div>
-    <div id="overlay" class="hidden invisible opacity-0 bg-gray-600  z-10 fixed top-0 left-0 w-full h-full transition-all duration-100">
+    <div id="overlay"
+         class="hidden invisible opacity-0 bg-gray-600  z-10 fixed top-0 left-0 w-full h-full transition-all duration-100">
+    </div>
+    <div id="showTaskModal"
+         class="animate-fadeIn fixed bg-gray-700 p-8  text-white hidden flex-col gap-10 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-2/5 transition-all duration-100 ease-in">
     </div>
 </div>
-<script  src="../src/script.js"></script>
+<script src="../src/script.js"></script>
 
 </body>
 </html>

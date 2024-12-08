@@ -10,6 +10,8 @@ const deadLine = document.getElementById('deadLine');
 const priorities = document.getElementsByName('priority');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const editTaskBtn = document.getElementById('editTaskBtn');
+const showTaskModal = document.getElementById('showTaskModal');
+
 
 
 let toDoArray = [];
@@ -78,6 +80,38 @@ function updateTask() {
     renderToDoList();
 }
 
+function showTask(id){
+    showTaskModal.innerHTML = "";
+    showTaskModal.classList.remove('hidden');
+    showTaskModal.classList.add('flex')
+    let task = toDoArray.find(item => item.id === id);
+    showTaskModal.innerHTML = `
+    <h3 class="font-bold text-2xl ">${task.taskName}</h3>
+        <div class="flex w-full justify-between items-center">
+            <div class="flex gap-3 items-center">
+                <span class="font-semibold">Priority</span>
+                <span class="bg-red-800 px-2 py-1 rounded-md">${task.priority}</span>
+            </div>
+            <div class="flex gap-3 items-center">
+                <span class="font-semibold">Status</span>
+                <span class="bg-yellow-600 px-2 py-1 rounded-md text-black">${task.status}</span>
+            </div>
+        </div>
+        <p class="font-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci dolor eos fugiat harum, minus nihil
+            non repellat repudiandae rerum tenetur!</p>
+        <div class="text-xs flex gap-4">
+            <span>DeadLine</span>
+            <span dir="rtl">${new Date(task.deadLine).toLocaleDateString('fa-IR')}</span>
+        </div>
+        <span class="text-red-500 absolute top-3 right-5 font-bold text-2xl cursor-pointer" onclick="closeTaskShow()">&Cross;</span>
+    `;
+}
+
+function closeTaskShow(){
+    showTaskModal.classList.remove('flex');
+    showTaskModal.classList.add('hidden');
+}
+
 function validate(input, ...validation) {
     if (validation.includes("required")) {
         input.innerHTML = "This Field is Required"
@@ -122,7 +156,7 @@ function renderToDoList() {
                                                                     alt="delete" class=" w-4"></button>
                     <button class="bg-blue-600 p-1 rounded-md " onclick="showModal('${item.id}')"><img src="./assets/Image/pen-f-svgrepo-com.svg"
                                                                      alt="edit" class="w-4"></button>
-                    <button class="bg-gray-500 p-1 rounded-md "><img src="./assets/Image/eye-svgrepo-com.svg" alt="see"
+                    <button class="bg-gray-500 p-1 rounded-md " onclick="showTask('${item.id}')"><img src="./assets/Image/eye-svgrepo-com.svg" alt="see"
                                                                      class="w-4"></button>
                 </td>
         </tr>
