@@ -21,7 +21,7 @@
                 <input type="text" placeholder="Search" class="outline-0 border-0 bg-transparent text-md">
             </div>
             <button><img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6"></button>
-            <button><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6"></button>
+            <button onclick="showAddModal()"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6"></button>
         </div>
     </header>
 
@@ -36,7 +36,7 @@
                 <th class="border border-gray-500 p-2">Operation</th>
             </tr>
             </thead>
-            <tbody class="text-center ">
+            <tbody class="text-center " id="toDoTable">
             <tr>
                 <td class="border border-gray-500 p-2">Walk the Dog</td>
                 <td class="border border-gray-500 p-2"><span
@@ -80,8 +80,8 @@
     </div>
 
     <div id="modal"
-         class="hidden fixed bg-indigo-700 p-8 flex flex-col justify-center items-center top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-1/2">
-        <form class="flex flex-col justify-center items-center gap-8 w-full text-white">
+         class="animate-fadeIn fixed bg-indigo-700 p-8 invisible opacity-0 hidden flex-col justify-center items-center top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-2/5 transition-all duration-100 ease-in">
+        <form class="flex flex-col justify-center items-center gap-8 w-full text-white" id="toDoForm">
             <div class="flex justify-between w-full items-center">
                 <label for="taskName" class=" font-semibold">Name</label>
                 <input type="text" placeholder="Please Enter Name of Your Task" id="taskName" name="taskName"
@@ -94,15 +94,15 @@
                 <div class="flex gap-10 items-center justify-center w-[80%] sm:w-[60%]">
                     <div>
                         <label for="lowPriority">Low</label>
-                        <input type="radio" id="lowPriority" name="priority">
+                        <input type="radio" id="lowPriority" name="priority" value="low" checked>
                     </div>
                     <div>
                         <label for="mediumPriority">Medium</label>
-                        <input type="radio" id="mediumPriority" name="priority">
+                        <input type="radio" id="mediumPriority" name="priority" value="medium">
                     </div>
                     <div>
                         <label for="highPriority">High</label>
-                        <input type="radio" id="highPriority" name="priority">
+                        <input type="radio" id="highPriority" name="priority" value="high">
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@
             </div>
             <div class="w-full flex justify-between ">
                 <label for="deadLine" class="font-semibold">DeadLine</label>
-                <input type="datetime-local" id="deadLine" name="deadLine"
+                <input type="date" id="deadLine" name="deadLine"
                        class="w-4/5 sm:w-3/5 outline-0 border-gray-400 border rounded-md p-2 bg-transparent shadow-xl">
             </div>
             <div class="flex gap-10 items-center">
@@ -125,16 +125,17 @@
                         class="bg-green-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 transition-all ease-in duration-100">
                     Save
                 </button>
-                <button id="closeModalBtn"
+                <button onclick="closeModal()" type="button"
                         class="bg-red-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-600 transition-all ease-in duration-100">
                     Cancel
                 </button>
             </div>
         </form>
     </div>
-    <div id="overlay" class=" hidden bg-gray-600 opacity-65 z-10 fixed top-0 left-0 w-full h-full">
+    <div id="overlay" class="hidden invisible opacity-0 bg-gray-600  z-10 fixed top-0 left-0 w-full h-full transition-all duration-100">
     </div>
 </div>
-<script src="../src/script.js"></script>
+<script  src="../src/script.js"></script>
+
 </body>
 </html>
