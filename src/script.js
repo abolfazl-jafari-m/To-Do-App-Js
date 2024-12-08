@@ -11,7 +11,7 @@ const priorities = document.getElementsByName('priority');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const editTaskBtn = document.getElementById('editTaskBtn');
 const showTaskModal = document.getElementById('showTaskModal');
-
+const messageBox = document.getElementById('messageBox');
 
 
 let toDoArray = [];
@@ -54,6 +54,7 @@ toDoForm.addEventListener('submit', (evt) => {
         localStorage.setItem('toDoList', JSON.stringify(toDoArray));
         closeModal();
         renderToDoList();
+        message("Your Task Successfully Add" , "#047857");
     }
 
 
@@ -64,6 +65,7 @@ function deleteTask(id) {
     toDoArray.splice(taskIndex, 1);
     localStorage.setItem('toDoList', JSON.stringify(toDoArray));
     renderToDoList();
+    message("Your Task Successfully Delete" , "#BE123C");
 }
 
 
@@ -78,6 +80,7 @@ function updateTask() {
     closeModal();
     toDoForm.reset();
     renderToDoList();
+    message("Your Task Successfully Update" , "#075985");
 }
 
 function showTask(id){
@@ -110,6 +113,18 @@ function showTask(id){
 function closeTaskShow(){
     showTaskModal.classList.remove('flex');
     showTaskModal.classList.add('hidden');
+}
+
+function message(message , color){
+    messageBox.innerHTML = message;
+    messageBox.classList.remove( "invisible" , 'opacity-0');
+    messageBox.classList.add( "visible" , 'opacity-100');
+    messageBox.style.backgroundColor = color;
+
+    setTimeout(()=>{
+        messageBox.classList.remove( "visible" , 'opacity-100');
+        messageBox.classList.add( "invisible" , 'opacity-0');
+    }, 2000);
 }
 
 function validate(input, ...validation) {
