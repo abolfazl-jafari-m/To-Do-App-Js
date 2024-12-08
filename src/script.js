@@ -1,8 +1,9 @@
-
 const modal = document.getElementById('modal');
 const overlay = document.getElementById('overlay');
 const toDoForm = document.getElementById('toDoForm');
 const toDoTable = document.getElementById("toDoTable");
+const taskNameMessage = document.getElementById("taskName-message");
+const dateMessage = document.getElementById("date-message");
 
 
 let toDoArray = [];
@@ -19,17 +20,41 @@ toDoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     let {taskName, priority, status, deadLine} = evt.target
     let toDo = {
-        id : Date.now().toString(36),
-        taskName: taskName.value,
+        id: Date.now().toString(36),
+        taskName: (taskName.value === "") ? validate(taskNameMessage, "required") : (taskName.value.length <= 3) ? validate(taskNameMessage , "length") :accepted(taskNameMessage, taskName.value),
         priority: priority.value,
         status: status.value,
-        deadLine: new Date(deadLine.value).toLocaleDateString('fa-IR', {year: "numeric", month: "long", day: "numeric"})
+        deadLine: (deadLine.value === "") ? validate(dateMessage, "required") : accepted(dateMessage,
+            new Date(deadLine.value).toLocaleDateString('fa-IR', {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }))
     }
-    toDoArray.push(toDo);
-    localStorage.setItem('toDoList', JSON.stringify(toDoArray));
-    closeModal();
-    renderToDoList();
+
+    if (!Object.values(toDo).includes(undefined)) {
+        toDoArray.push(toDo);
+        localStorage.setItem('toDoList', JSON.stringify(toDoArray));
+        closeModal();
+        renderToDoList();
+    }
+
+
 });
+
+function validate(input, ...validation) {
+    if (validation.includes("required")) {
+        input.innerHTML = "This Field is Required"
+    }
+    if (validation.includes("length")){
+        input.innerHTML = "Min length is 4";
+    }
+}
+
+function accepted(input, value) {
+    input.innerHTML = "";
+    return value
+}
 
 function closeModal() {
     modal.classList.remove("visible", "animate-fadeIn", 'flex');
@@ -41,7 +66,7 @@ function closeModal() {
 function renderToDoList() {
     toDoTable.innerHTML = "";
     toDoArray = JSON.parse(localStorage.getItem('toDoList'));
-    if (toDoArray){
+    if (toDoArray) {
         toDoArray.forEach((item) => {
             toDoTable.innerHTML += `
          <tr>
@@ -63,10 +88,9 @@ function renderToDoList() {
         </tr>
         `
         });
-    }else {
+    } else {
         toDoArray = [];
     }
-
 }
 
 renderToDoList();

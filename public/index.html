@@ -84,8 +84,12 @@
         <form class="flex flex-col justify-center items-center gap-8 w-full text-white" id="toDoForm">
             <div class="flex justify-between w-full items-center">
                 <label for="taskName" class=" font-semibold">Name</label>
-                <input type="text" placeholder="Please Enter Name of Your Task" id="taskName" name="taskName"
-                       class="w-[80%] sm:w-[60%] bg-transparent border border-gray-400 p-2 outline-0 rounded-md  shadow-md">
+                <div class="flex flex-col w-[80%] sm:w-[60%] gap-2">
+                    <input type="text" placeholder="Please Enter Name of Your Task" id="taskName" name="taskName"
+                           class="w-full bg-transparent border border-gray-400 p-2 outline-0 rounded-md  shadow-md">
+                    <span id="taskName-message" class="text-red-400 text-xs min-h-2"></span>
+                </div>
+
             </div>
             <div class="flex justify-between w-full items-center">
                 <div class=" font-semibold">
@@ -117,8 +121,13 @@
             </div>
             <div class="w-full flex justify-between ">
                 <label for="deadLine" class="font-semibold">DeadLine</label>
-                <input type="date" id="deadLine" name="deadLine"
-                       class="w-4/5 sm:w-3/5 outline-0 border-gray-400 border rounded-md p-2 bg-transparent shadow-xl">
+                <div class="flex flex-col w-4/5 sm:w-3/5  gap-2">
+                    <input type="date" id="deadLine" name="deadLine"
+                           class=" w-full outline-0 border-gray-400 border rounded-md p-2 bg-transparent shadow-xl">
+                    <span id="date-message" class="text-red-400 text-xs min-h-2 w-full"></span>
+                </div>
+
+
             </div>
             <div class="flex gap-10 items-center">
                 <button type="submit" id="addTaskBtn"
