@@ -42,6 +42,14 @@ toDoForm.addEventListener('submit', (evt) => {
 
 });
 
+function deleteTask(id){
+    let taskIndex = toDoArray.findIndex(item => item.id === id);
+    console.log(taskIndex)
+    toDoArray.splice(taskIndex, 1);
+    localStorage.setItem('toDoList', JSON.stringify(toDoArray));
+    renderToDoList();
+}
+
 function validate(input, ...validation) {
     if (validation.includes("required")) {
         input.innerHTML = "This Field is Required"
@@ -78,7 +86,7 @@ function renderToDoList() {
                 <td class="border border-gray-500 p-2 hidden sm:table-cell"><span dir="rtl"
                         class="px-2 py-1 border-2 border-blue-300 rounded-2xl">${item.deadLine}</span></td>
                 <td class="border border-gray-500 p-2">
-                    <button class="bg-red-600 p-1 rounded-md "><img src="./assets/Image/delete-svgrepo-com.svg"
+                    <button class="bg-red-600 p-1 rounded-md " onclick="deleteTask('${item.id}')"><img src="./assets/Image/delete-svgrepo-com.svg"
                                                                     alt="delete" class=" w-4"></button>
                     <button class="bg-blue-600 p-1 rounded-md "><img src="./assets/Image/pen-f-svgrepo-com.svg"
                                                                      alt="edit" class="w-4"></button>
