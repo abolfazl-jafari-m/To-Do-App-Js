@@ -59,6 +59,7 @@ function closeFormModal() {
     overlay.classList.remove("visible", "opacity-60");
     overlay.classList.add("invisible", "opacity-0", "hidden");
     taskFormModal.classList.add("invisible", "hidden");
+    clearValidationMessage();
 }
 
 
@@ -117,41 +118,44 @@ function deleteTask(id) {
 }
 
 function updateTask() {
-    task.taskName = (taskName.value === "") ? validate(taskNameMessage, {
-            validation: ["required"],
-        }) :
-        (taskName.value.length <= 3) ? validate(taskNameMessage, {
-                validation: ["length"],
-                option: {length: 4}
-            }) :
-            (taskName.value) ?
-                accepted(taskNameMessage, taskName.value) :
-                task.taskName;
-    task.description = (description.value === "") ? validate(descriptionMessage, {
-            validation: ["required"],
-        })
-        : (description.value.length < 10) ? validate(descriptionMessage, {
-                validation: ['length'],
-                option: {length: 10}
-            }) :
-            (description.value) ?
-                accepted(descriptionMessage, description.value) :
-                task.description
+    (taskName.value && taskName.value.length < 4) ?
+        validate(taskNameMessage, {validation: ['length'], option: {length: 4}}) :
+    (!taskName.value) ?
+        validate(taskNameMessage, {validation: ['required']}) :
+        task.taskName = accepted(taskNameMessage, taskName.value);
+
+    (!description.value) ?
+        validate(descriptionMessage, {validation : ['required']})  :
+    (description.value.length < 10 ) ?
+        validate(descriptionMessage , {validation : ['length'] , option: {length : 10}}):
+        task.description = accepted(descriptionMessage , description.value);
+
     task.priority = document.querySelector("input[name=priority]:checked").value
     task.status = status.value;
-    task.deadLine = (deadLine.value === "") ? validate(dateMessage, {
-            validation: ["required"]
-        }) :
-        (deadLine.value) ?
-            accepted(dateMessage, deadLine.value) :
-            task.deadLine;
-    if (!Object.values(task).includes(undefined)) {
+
+    (!deadLine.value) ?
+        validate(dateMessage , {validation : ['required']}) :
+        task.deadLine = accepted(dateMessage , deadLine.value);
+
+    let messages = [];
+    for (const item of  document.querySelectorAll("span[id$='message']")) {
+        messages.push(item.innerHTML);
+    }
+    if (messages.every(item => item === "")){
         localStorage.setItem('toDoList', JSON.stringify(toDoArray));
         closeFormModal();
         toDoForm.reset();
         renderToDoList();
         message("Your Task Successfully Update", "#075985");
     }
+
+
+
+
+
+
+
+
 
 }
 
@@ -189,7 +193,6 @@ function closeTaskShow() {
 }
 
 
-
 function validate(input, options) {
     let {validation = [], option: {length} = {}} = options;
 
@@ -200,7 +203,7 @@ function validate(input, options) {
     if (validation.includes("length")) {
         message.push("Min Length is " + length);
     }
-    if (message.length > 0){
+    if (message.length > 0) {
         input.innerHTML = message.join(" . ");
     }
 }
@@ -208,6 +211,12 @@ function validate(input, options) {
 function accepted(input, value) {
     input.innerHTML = "";
     return value
+}
+
+function clearValidationMessage() {
+    dateMessage.innerHTML = "";
+    taskNameMessage.innerHTML = "";
+    descriptionMessage.innerHTML = "";
 }
 
 function message(message, color) {
