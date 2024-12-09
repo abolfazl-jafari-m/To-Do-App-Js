@@ -4,7 +4,9 @@ const toDoForm = document.getElementById('toDoForm');
 const toDoTable = document.getElementById("toDoTable");
 const taskNameMessage = document.getElementById("taskName-message");
 const dateMessage = document.getElementById("date-message");
+const descriptionMessage = document.getElementById('description-message')
 const taskName = document.getElementById('taskName');
+const description = document.getElementById('description');
 const status = document.getElementById('status');
 const deadLine = document.getElementById('deadLine');
 const priorities = document.getElementsByName('priority');
@@ -21,6 +23,7 @@ function showModal(taskId) {
     if (taskId) {
         task = toDoArray.find(item => item.id === taskId);
         taskName.value = task.taskName;
+        description.value = task.description;
         status.value = task.status;
         deadLine.value = task.deadLine;
         for (const item of priorities) {
@@ -41,10 +44,11 @@ function showModal(taskId) {
 
 toDoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    let {taskName, priority, status, deadLine} = evt.target
+    let {taskName, description ,priority, status, deadLine} = evt.target
     let toDo = {
         id: Date.now().toString(36),
         taskName: (taskName.value === "") ? validate(taskNameMessage, "required") : (taskName.value.length <= 3) ? validate(taskNameMessage, "length") : accepted(taskNameMessage, taskName.value),
+        description : (description.value === "") ? validate(descriptionMessage, "required") : (description.value.length <= 10) ? validate(descriptionMessage, "length") : accepted(description, description.value),
         priority: priority.value,
         status: status.value,
         deadLine: (deadLine.value === "") ? validate(dateMessage, "required") : accepted(dateMessage, deadLine.value)
@@ -73,6 +77,7 @@ function updateTask() {
     task.taskName = (taskName.value === "") ? validate(taskNameMessage, 'required') :
         (taskName.value.length <= 3) ? validate(taskNameMessage, "length") :
             accepted(taskNameMessage, taskName.value);
+    task.description = (description.value === "") ? validate(descriptionMessage, "required") : (description.value.length <= 10) ? validate(descriptionMessage, "length") : accepted(description, description.value),
     task.priority = document.querySelector("input[name=priority]:checked").value
     task.status = status.value;
     task.deadLine = deadLine.value;
@@ -100,8 +105,7 @@ function showTask(id) {
                 <span class="bg-yellow-600 px-2 py-1 rounded-md text-black">${task.status}</span>
             </div>
         </div>
-        <p class="font-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci dolor eos fugiat harum, minus nihil
-            non repellat repudiandae rerum tenetur!</p>
+        <p class="font-light">${task.description}</p>
         <div class="text-xs flex gap-4">
             <span>DeadLine</span>
             <span dir="rtl">${new Date(task.deadLine).toLocaleDateString('fa-IR')}</span>
