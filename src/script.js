@@ -44,14 +44,38 @@ function showModal(taskId) {
 
 toDoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    let {taskName, description ,priority, status, deadLine} = evt.target
+    let {taskName, description, priority, status, deadLine} = evt.target
     let toDo = {
         id: Date.now().toString(36),
-        taskName: (taskName.value === "") ? validate(taskNameMessage, "required") : (taskName.value.length <= 3) ? validate(taskNameMessage, "length") : accepted(taskNameMessage, taskName.value),
-        description : (description.value === "") ? validate(descriptionMessage, "required") : (description.value.length <= 10) ? validate(descriptionMessage, "length") : accepted(description, description.value),
+        taskName: (taskName.value === "") ?
+            validate(taskNameMessage, {
+                validation: ['required']
+            }) : (taskName.value.length <= 3) ?
+                validate(taskNameMessage, {
+                    validation: ["length"],
+                    option: {
+                        length: 4
+                    }
+                }) : accepted(taskNameMessage, taskName.value),
+        description: (description.value === "") ?
+            validate(descriptionMessage, {
+                validation: ['required']
+            }) :
+            (description.value.length <= 10) ?
+                validate(descriptionMessage, {
+                    validation: ['length'],
+                    option: {
+                        length: 11
+                    }
+                }) :
+                accepted(description, description.value),
         priority: priority.value,
         status: status.value,
-        deadLine: (deadLine.value === "") ? validate(dateMessage, "required") : accepted(dateMessage, deadLine.value)
+        deadLine: (deadLine.value === "") ?
+            validate(dateMessage, {
+                validation: ['required']
+            }) :
+            accepted(dateMessage, deadLine.value)
     }
     if (!Object.values(toDo).includes(undefined)) {
         toDoArray.push(toDo);
@@ -74,18 +98,42 @@ function deleteTask(id) {
 
 
 function updateTask() {
-    task.taskName = (taskName.value === "") ? validate(taskNameMessage, 'required') :
-        (taskName.value.length <= 3) ? validate(taskNameMessage, "length") :
-            accepted(taskNameMessage, taskName.value);
-    task.description = (description.value === "") ? validate(descriptionMessage, "required") : (description.value.length <= 10) ? validate(descriptionMessage, "length") : accepted(description, description.value),
+    task.taskName = (taskName.value === "") ? validate(taskNameMessage, {
+            validation: ["required"],
+        }) :
+        (taskName.value.length <= 3) ? validate(taskNameMessage, {
+                validation: ["length"],
+                option: {length: 4}
+            }) :
+            (taskName.value) ?
+                accepted(taskNameMessage, taskName.value) :
+                task.taskName;
+    task.description = (description.value === "") ? validate(descriptionMessage, {
+            validation: ["required"],
+        })
+        : (description.value.length < 10) ? validate(descriptionMessage, {
+                validation: ['length'],
+                option: {length: 10}
+            }) :
+            (description.value) ?
+                accepted(descriptionMessage, description.value) :
+                task.description
     task.priority = document.querySelector("input[name=priority]:checked").value
     task.status = status.value;
-    task.deadLine = deadLine.value;
-    localStorage.setItem('toDoList', JSON.stringify(toDoArray));
-    closeModal();
-    toDoForm.reset();
-    renderToDoList();
-    message("Your Task Successfully Update", "#075985");
+    task.deadLine = (deadLine.value === "") ? validate(dateMessage, {
+            validation: ["required"]
+        }) :
+        (deadLine.value) ?
+            accepted(dateMessage, deadLine.value) :
+            task.deadLine;
+    if (!Object.values(task).includes(undefined)) {
+        localStorage.setItem('toDoList', JSON.stringify(toDoArray));
+        closeModal();
+        toDoForm.reset();
+        renderToDoList();
+        message("Your Task Successfully Update", "#075985");
+    }
+
 }
 
 function showTask(id) {
@@ -93,16 +141,44 @@ function showTask(id) {
     showTaskModal.classList.remove('hidden');
     showTaskModal.classList.add('flex')
     let task = toDoArray.find(item => item.id === id);
+    let statusBg = null;
+    let statusText = null;
+    let priorityBg = null;
+    let priorityText = null;
+    if (task.status === "toDo") {
+        statusBg = "bg-[#DC2626]";
+        statusText = "text-white";
+    }
+    if (task.status === "Done") {
+        statusBg = "bg-[#2e7d32]";
+        statusText = "text-white";
+    }
+    if (task.status === "Doing") {
+        statusBg = "bg-[#ffc107]";
+        statusText = "text-black";
+    }
+    if (task.priority === "low") {
+        priorityBg = "bg-gray-300";
+        priorityText = "text-black";
+    }
+    if (task.priority === "medium") {
+        priorityBg = "bg-[#ffc107]"
+        priorityText = "text-black";
+    }
+    if (task.priority === "high") {
+        priorityBg = "bg-[#DC2626]";
+        priorityText = "text-white";
+    }
     showTaskModal.innerHTML = `
     <h3 class="font-bold text-2xl ">${task.taskName}</h3>
         <div class="flex w-full justify-between items-center">
             <div class="flex gap-3 items-center">
                 <span class="font-semibold">Priority</span>
-                <span class="bg-red-800 px-2 py-1 rounded-md">${task.priority}</span>
+                <span class="${priorityBg} ${priorityText} px-2 py-1 rounded-md">${task.priority}</span>
             </div>
             <div class="flex gap-3 items-center">
                 <span class="font-semibold">Status</span>
-                <span class="bg-yellow-600 px-2 py-1 rounded-md text-black">${task.status}</span>
+                <span class="${statusBg} ${statusText} px-2 py-1 rounded-md text-black">${task.status}</span>
             </div>
         </div>
         <p class="font-light">${task.description}</p>
@@ -131,12 +207,14 @@ function message(message, color) {
     }, 2000);
 }
 
-function validate(input, ...validation) {
+function validate(input, options) {
+    let {validation = [], option: {length} = {}} = options;
+
     if (validation.includes("required")) {
-        input.innerHTML = "This Field is Required"
+        input.innerHTML = "This Field is Required";
     }
     if (validation.includes("length")) {
-        input.innerHTML = "Min length is 4";
+        input.innerHTML = "Min Length is " + length;
     }
 }
 
