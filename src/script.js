@@ -149,14 +149,6 @@ function updateTask() {
         message("Your Task Successfully Update", "#075985");
     }
 
-
-
-
-
-
-
-
-
 }
 
 function showTask(id) {
