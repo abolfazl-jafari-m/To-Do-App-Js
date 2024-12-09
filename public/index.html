@@ -21,7 +21,7 @@
                 <input type="text" placeholder="Search" class="outline-0 border-0 bg-transparent text-md">
             </div>
             <button><img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6"></button>
-            <button onclick="showModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6">
+            <button onclick="showFormModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6">
             </button>
         </div>
     </header>
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <div id="modal"
+    <div id="taskFormModal"
          class="animate-fadeIn fixed bg-indigo-700 p-8 invisible opacity-0 hidden flex-col justify-center items-center top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-2/5 transition-all duration-100 ease-in">
         <form class="flex flex-col justify-center items-center gap-8 w-full text-white" id="toDoForm">
             <div class="flex justify-between w-full items-center">
@@ -146,7 +146,7 @@
                         class="hidden bg-blue-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition-all ease-in duration-100">
                     Update
                 </button>
-                <button onclick="closeModal()" type="button"
+                <button onclick="closeFormModal()" type="button"
                         class="bg-red-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-600 transition-all ease-in duration-100">
                     Cancel
                 </button>

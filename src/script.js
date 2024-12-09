@@ -1,4 +1,4 @@
-const modal = document.getElementById('modal');
+const taskFormModal = document.getElementById('taskFormModal');
 const overlay = document.getElementById('overlay');
 const toDoForm = document.getElementById('toDoForm');
 const toDoTable = document.getElementById("toDoTable");
@@ -31,7 +31,7 @@ const priorityColor = {
 }
 
 
-function showModal(taskId) {
+function showFormModal(taskId) {
     if (taskId) {
         task = toDoArray.find(item => item.id === taskId);
         taskName.value = task.taskName;
@@ -48,11 +48,19 @@ function showModal(taskId) {
         addTaskBtn.classList.remove('hidden')
         editTaskBtn.classList.add('hidden');
     }
-    modal.classList.remove("invisible", "opacity-0", 'hidden');
+    taskFormModal.classList.remove("invisible", "opacity-0", 'hidden');
     overlay.classList.remove("invisible", "opacity-0", "hidden");
     overlay.classList.add("visible", "opacity-60");
-    modal.classList.add("visible", "flex");
+    taskFormModal.classList.add("visible", "flex");
 }
+
+function closeFormModal() {
+    taskFormModal.classList.remove("visible", 'flex');
+    overlay.classList.remove("visible", "opacity-60");
+    overlay.classList.add("invisible", "opacity-0", "hidden");
+    taskFormModal.classList.add("invisible", "hidden");
+}
+
 
 toDoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -92,7 +100,7 @@ toDoForm.addEventListener('submit', (evt) => {
     if (!Object.values(toDo).includes(undefined)) {
         toDoArray.push(toDo);
         localStorage.setItem('toDoList', JSON.stringify(toDoArray));
-        closeModal();
+        closeFormModal();
         renderToDoList();
         message("Your Task Successfully Add", "#047857");
     }
@@ -107,7 +115,6 @@ function deleteTask(id) {
     renderToDoList();
     message("Your Task Successfully Delete", "#BE123C");
 }
-
 
 function updateTask() {
     task.taskName = (taskName.value === "") ? validate(taskNameMessage, {
@@ -140,7 +147,7 @@ function updateTask() {
             task.deadLine;
     if (!Object.values(task).includes(undefined)) {
         localStorage.setItem('toDoList', JSON.stringify(toDoArray));
-        closeModal();
+        closeFormModal();
         toDoForm.reset();
         renderToDoList();
         message("Your Task Successfully Update", "#075985");
@@ -155,7 +162,7 @@ function showTask(id) {
     let task = toDoArray.find(item => item.id === id);
     const {bgPriority, textPriority} = priorityColor[task.priority];
     const {bgStatus, textStatus} = statusColor[task.status];
-        showTaskModal.innerHTML = `
+    showTaskModal.innerHTML = `
     <h3 class="font-bold text-2xl ">${task.taskName}</h3>
         <div class="flex w-full justify-between items-center">
             <div class="flex gap-3 items-center">
@@ -181,6 +188,28 @@ function closeTaskShow() {
     showTaskModal.classList.add('hidden');
 }
 
+
+
+function validate(input, options) {
+    let {validation = [], option: {length} = {}} = options;
+
+    let message = [];
+    if (validation.includes("required")) {
+        message.push("This Field is Required");
+    }
+    if (validation.includes("length")) {
+        message.push("Min Length is " + length);
+    }
+    if (message.length > 0){
+        input.innerHTML = message.join(" . ");
+    }
+}
+
+function accepted(input, value) {
+    input.innerHTML = "";
+    return value
+}
+
 function message(message, color) {
     messageBox.innerHTML = message;
     messageBox.classList.remove("invisible", 'opacity-0');
@@ -193,28 +222,6 @@ function message(message, color) {
     }, 2000);
 }
 
-function validate(input, options) {
-    let {validation = [], option: {length} = {}} = options;
-
-    if (validation.includes("required")) {
-        input.innerHTML = "This Field is Required";
-    }
-    if (validation.includes("length")) {
-        input.innerHTML = "Min Length is " + length;
-    }
-}
-
-function accepted(input, value) {
-    input.innerHTML = "";
-    return value
-}
-
-function closeModal() {
-    modal.classList.remove("visible", 'flex');
-    overlay.classList.remove("visible", "opacity-60");
-    overlay.classList.add("invisible", "opacity-0", "hidden");
-    modal.classList.add("invisible", "hidden");
-}
 
 function renderToDoList() {
     toDoTable.innerHTML = "";
@@ -239,7 +246,7 @@ function renderToDoList() {
                 <td class="border border-gray-500 p-2">
                     <button class="bg-red-600 p-1 rounded-md " onclick="deleteTask('${item.id}')"><img src="./assets/Image/delete-svgrepo-com.svg"
                                                                     alt="delete" class=" w-4"></button>
-                    <button class="bg-blue-600 p-1 rounded-md " onclick="showModal('${item.id}')"><img src="./assets/Image/pen-f-svgrepo-com.svg"
+                    <button class="bg-blue-600 p-1 rounded-md " onclick="showFormModal('${item.id}')"><img src="./assets/Image/pen-f-svgrepo-com.svg"
                                                                      alt="edit" class="w-4"></button>
                     <button class="bg-gray-500 p-1 rounded-md " onclick="showTask('${item.id}')"><img src="./assets/Image/eye-svgrepo-com.svg" alt="see"
                                                                      class="w-4"></button>
