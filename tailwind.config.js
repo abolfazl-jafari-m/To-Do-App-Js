@@ -2,6 +2,11 @@
 module.exports = {
     content: ['./src/**/*.{html,js}',
         './public/**/*.{html,js}'],
+    safelist : [
+        'bg-[#2e7d32]',
+        'bg-[#ffc107]',
+        'bg-[#DC2626]',
+    ],
     theme: {
         extend: {
           keyframes : {

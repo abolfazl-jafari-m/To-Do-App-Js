@@ -54,7 +54,7 @@ toDoForm.addEventListener('submit', (evt) => {
         localStorage.setItem('toDoList', JSON.stringify(toDoArray));
         closeModal();
         renderToDoList();
-        message("Your Task Successfully Add" , "#047857");
+        message("Your Task Successfully Add", "#047857");
     }
 
 
@@ -65,13 +65,13 @@ function deleteTask(id) {
     toDoArray.splice(taskIndex, 1);
     localStorage.setItem('toDoList', JSON.stringify(toDoArray));
     renderToDoList();
-    message("Your Task Successfully Delete" , "#BE123C");
+    message("Your Task Successfully Delete", "#BE123C");
 }
 
 
 function updateTask() {
     task.taskName = (taskName.value === "") ? validate(taskNameMessage, 'required') :
-             (taskName.value.length <= 3) ? validate(taskNameMessage, "length") :
+        (taskName.value.length <= 3) ? validate(taskNameMessage, "length") :
             accepted(taskNameMessage, taskName.value);
     task.priority = document.querySelector("input[name=priority]:checked").value
     task.status = status.value;
@@ -80,10 +80,10 @@ function updateTask() {
     closeModal();
     toDoForm.reset();
     renderToDoList();
-    message("Your Task Successfully Update" , "#075985");
+    message("Your Task Successfully Update", "#075985");
 }
 
-function showTask(id){
+function showTask(id) {
     showTaskModal.innerHTML = "";
     showTaskModal.classList.remove('hidden');
     showTaskModal.classList.add('flex')
@@ -110,20 +110,20 @@ function showTask(id){
     `;
 }
 
-function closeTaskShow(){
+function closeTaskShow() {
     showTaskModal.classList.remove('flex');
     showTaskModal.classList.add('hidden');
 }
 
-function message(message , color){
+function message(message, color) {
     messageBox.innerHTML = message;
-    messageBox.classList.remove( "invisible" , 'opacity-0');
-    messageBox.classList.add( "visible" , 'opacity-100');
+    messageBox.classList.remove("invisible", 'opacity-0');
+    messageBox.classList.add("visible", 'opacity-100');
     messageBox.style.backgroundColor = color;
 
-    setTimeout(()=>{
-        messageBox.classList.remove( "visible" , 'opacity-100');
-        messageBox.classList.add( "invisible" , 'opacity-0');
+    setTimeout(() => {
+        messageBox.classList.remove("visible", 'opacity-100');
+        messageBox.classList.add("invisible", 'opacity-0');
     }, 2000);
 }
 
@@ -153,13 +153,42 @@ function renderToDoList() {
     toDoArray = JSON.parse(localStorage.getItem('toDoList'));
     if (toDoArray) {
         toDoArray.forEach((item) => {
+            let statusBg = null;
+            let statusText = null;
+            let priorityBg = null;
+            let priorityText = null;
+            if (item.status === "toDo") {
+                statusBg = "bg-[#DC2626]";
+                statusText = "text-white";
+            }
+            if (item.status === "Done") {
+                statusBg = "bg-[#2e7d32]";
+                statusText = "text-white";
+            }
+            if (item.status === "Doing") {
+                statusBg = "bg-[#ffc107]";
+                statusText = "text-black";
+            }
+            if (item.priority === "low") {
+                priorityBg = "bg-gray-300";
+                priorityText = "text-black";
+            }
+            if (item.priority === "medium") {
+                priorityBg = "bg-[#ffc107]"
+                priorityText = "text-black";
+            }
+            if (item.priority === "high") {
+                priorityBg = "bg-[#DC2626]";
+                priorityText = "text-white";
+            }
+
             toDoTable.innerHTML += `
          <tr>
                 <td class="border border-gray-500 p-2">${item.taskName}</td>
                 <td class="border border-gray-500 p-2"><span
-                        class="px-2 py-1.5 bg-gray-400 rounded-2xl font-semibold text-xs">${item.priority}</span></td>
+                        class="px-2 py-1.5 ${priorityBg} rounded-2xl font-semibold text-xs ${priorityText}">${item.priority}</span></td>
                 <td class="border border-gray-500 p-2"><span
-                        class="px-2 py-1.5 bg-red-700  rounded-2xl text-white font-semibold text-xs">${item.status}</span></td>
+                        class="px-2 py-1.5 ${statusBg} rounded-2xl ${statusText} font-semibold text-xs">${item.status}</span></td>
                 <td class="border border-gray-500 p-2 hidden sm:table-cell"><span dir="rtl"
                         class="px-2 py-1 border-2 border-blue-300 rounded-2xl">${new Date(item.deadLine).toLocaleDateString('fa-IR', {
                 year: "numeric",
