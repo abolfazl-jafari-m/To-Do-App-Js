@@ -19,6 +19,18 @@ const messageBox = document.getElementById('messageBox');
 let toDoArray = [];
 let task = null;
 
+const statusColor = {
+    toDo: {bgStatus: "bg-[#DC2626]", textStatus: "text-white"},
+    Doing: {bgStatus: "bg-[#ffc107]", textStatus: "text-black"},
+    Done: {bgStatus: "bg-[#2e7d32]", textStatus: "text-white"},
+}
+const priorityColor = {
+    low: {bgPriority: "bg-gray-300", textPriority: "text-black"},
+    medium: {bgPriority: "bg-[#ffc107]", textPriority: "text-black"},
+    high: {bgPriority: "bg-[#DC2626]", textPriority: "text-white"}
+}
+
+
 function showModal(taskId) {
     if (taskId) {
         task = toDoArray.find(item => item.id === taskId);
@@ -44,7 +56,7 @@ function showModal(taskId) {
 
 toDoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    let {taskName, description, priority, status, deadLine} = evt.target
+    let {taskName, description, priority, status, deadLine} = evt.target;
     let toDo = {
         id: Date.now().toString(36),
         taskName: (taskName.value === "") ?
@@ -141,44 +153,18 @@ function showTask(id) {
     showTaskModal.classList.remove('hidden');
     showTaskModal.classList.add('flex')
     let task = toDoArray.find(item => item.id === id);
-    let statusBg = null;
-    let statusText = null;
-    let priorityBg = null;
-    let priorityText = null;
-    if (task.status === "toDo") {
-        statusBg = "bg-[#DC2626]";
-        statusText = "text-white";
-    }
-    if (task.status === "Done") {
-        statusBg = "bg-[#2e7d32]";
-        statusText = "text-white";
-    }
-    if (task.status === "Doing") {
-        statusBg = "bg-[#ffc107]";
-        statusText = "text-black";
-    }
-    if (task.priority === "low") {
-        priorityBg = "bg-gray-300";
-        priorityText = "text-black";
-    }
-    if (task.priority === "medium") {
-        priorityBg = "bg-[#ffc107]"
-        priorityText = "text-black";
-    }
-    if (task.priority === "high") {
-        priorityBg = "bg-[#DC2626]";
-        priorityText = "text-white";
-    }
-    showTaskModal.innerHTML = `
+    const {bgPriority, textPriority} = priorityColor[task.priority];
+    const {bgStatus, textStatus} = statusColor[task.status];
+        showTaskModal.innerHTML = `
     <h3 class="font-bold text-2xl ">${task.taskName}</h3>
         <div class="flex w-full justify-between items-center">
             <div class="flex gap-3 items-center">
                 <span class="font-semibold">Priority</span>
-                <span class="${priorityBg} ${priorityText} px-2 py-1 rounded-md">${task.priority}</span>
+                <span class="${bgPriority} ${textPriority} px-2 py-1 rounded-md">${task.priority}</span>
             </div>
             <div class="flex gap-3 items-center">
                 <span class="font-semibold">Status</span>
-                <span class="${statusBg} ${statusText} px-2 py-1 rounded-md text-black">${task.status}</span>
+                <span class="${bgStatus} ${textStatus} px-2 py-1 rounded-md text-black">${task.status}</span>
             </div>
         </div>
         <p class="font-light">${task.description}</p>
@@ -235,42 +221,15 @@ function renderToDoList() {
     toDoArray = JSON.parse(localStorage.getItem('toDoList'));
     if (toDoArray) {
         toDoArray.forEach((item) => {
-            let statusBg = null;
-            let statusText = null;
-            let priorityBg = null;
-            let priorityText = null;
-            if (item.status === "toDo") {
-                statusBg = "bg-[#DC2626]";
-                statusText = "text-white";
-            }
-            if (item.status === "Done") {
-                statusBg = "bg-[#2e7d32]";
-                statusText = "text-white";
-            }
-            if (item.status === "Doing") {
-                statusBg = "bg-[#ffc107]";
-                statusText = "text-black";
-            }
-            if (item.priority === "low") {
-                priorityBg = "bg-gray-300";
-                priorityText = "text-black";
-            }
-            if (item.priority === "medium") {
-                priorityBg = "bg-[#ffc107]"
-                priorityText = "text-black";
-            }
-            if (item.priority === "high") {
-                priorityBg = "bg-[#DC2626]";
-                priorityText = "text-white";
-            }
-
+            const {bgPriority, textPriority} = priorityColor[item.priority];
+            const {bgStatus, textStatus} = statusColor[item.status];
             toDoTable.innerHTML += `
          <tr>
                 <td class="border border-gray-500 p-2">${item.taskName}</td>
                 <td class="border border-gray-500 p-2"><span
-                        class="px-2 py-1.5 ${priorityBg} rounded-2xl font-semibold text-xs ${priorityText}">${item.priority}</span></td>
+                        class="px-2 py-1.5 ${bgPriority} rounded-2xl font-semibold text-xs ${textPriority}">${item.priority}</span></td>
                 <td class="border border-gray-500 p-2"><span
-                        class="px-2 py-1.5 ${statusBg} rounded-2xl ${statusText} font-semibold text-xs">${item.status}</span></td>
+                        class="px-2 py-1.5 ${bgStatus} rounded-2xl ${textStatus} font-semibold text-xs">${item.status}</span></td>
                 <td class="border border-gray-500 p-2 hidden sm:table-cell"><span dir="rtl"
                         class="px-2 py-1 border-2 border-blue-300 rounded-2xl">${new Date(item.deadLine).toLocaleDateString('fa-IR', {
                 year: "numeric",
