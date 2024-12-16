@@ -207,6 +207,7 @@ async function createTask(title, description, status, priority, deadLine) {
             throw new Error("connection is failed");
         } else {
             const result = await response.json();
+            message("Your Task Successfully Add", "#047857");
         }
     } catch (err) {
         console.log(err)
@@ -259,7 +260,7 @@ async function updateTask(id, title, description, status, priority, deadLine) {
             throw new Error("connection is failed")
         } else {
             const result = await response.json();
-            console.log(result);
+            message("Your Task Successfully Update", "#075985");
         }
     } catch (err) {
         console.log(err)
@@ -279,6 +280,7 @@ async function deleteTask(id) {
             throw new Error("connection is Failed");
         } else {
             const result = await response.json()
+            message("Your Task Successfully Delete", "#BE123C");
         }
     } catch (err) {
         console.log(err);
@@ -343,4 +345,16 @@ function validate(inputMessage, options) {
 function accepted(inputMessage, value) {
     inputMessage.innerHTML = ""
     return value;
+}
+
+function message(message, color) {
+    messageBox.innerHTML = message;
+    messageBox.classList.remove("invisible", 'opacity-0');
+    messageBox.classList.add("visible", 'opacity-100');
+    messageBox.style.backgroundColor = color;
+
+    setTimeout(() => {
+        messageBox.classList.remove("visible", 'opacity-100');
+        messageBox.classList.add("invisible", 'opacity-0');
+    }, 3000);
 }
