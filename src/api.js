@@ -22,6 +22,8 @@ const addTaskBtn = document.getElementById('addTaskBtn');
 const editTaskBtn = document.getElementById('editTaskBtn');
 const showTaskModal = document.getElementById('showTaskModal');
 const messageBox = document.getElementById('messageBox');
+const messages = document.querySelectorAll("span[id$=message]");
+
 
 const statusColor = {
     toDo: {bgStatus: "bg-[#DC2626]", textStatus: "text-white"},
@@ -69,6 +71,16 @@ function closeFormModal() {
     taskFormModal.classList.remove("visible", "flex");
     taskFormModal.classList.add("invisible", "opacity-0", 'hidden');
     overlay.classList.add("invisible", "opacity-0", "hidden");
+    clearMessages();
+}
+
+function clearMessages(){
+    messages.forEach(item =>{
+        item.innerHTML = "";
+    })
+}
+function loading(){
+
 }
 
 
@@ -111,10 +123,10 @@ async function showTask(id) {
     }
 }
 
-function taskModalContent(task){
-    showTaskModal.innerHTML =  "";
-    let {bgPriority , textPriority} = priorityColor[task.priority];
-    let {bgStatus , textStatus} = statusColor[task.status];
+function taskModalContent(task) {
+    showTaskModal.innerHTML = "";
+    let {bgPriority, textPriority} = priorityColor[task.priority];
+    let {bgStatus, textStatus} = statusColor[task.status];
     showTaskModal.innerHTML = `
      <h3 class="font-bold text-2xl ">${task.title}</h3>
         <div class="flex w-full justify-between items-center">
@@ -142,11 +154,31 @@ function closeTaskShow() {
 }
 
 taskFormModal.addEventListener("submit", async (e) => {
-
     e.preventDefault();
     let {taskTitle, description, status, priority, deadLine} = e.target;
-    await createTask(taskTitle.value, description.value, status.value, priority.value, deadLine.value);
+    let validated = {
+        title:
+            (taskTitle.value === "") ?
+                validate(taskTitleMessage, {validation: ['required']}) :
+            (taskTitle.value.length < 4) ?
+                validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
+               accepted(taskTitleMessage, taskTitle.value),
+        description :
+            (description.value === "") ?
+                validate(descriptionMessage , {validation : ['required']}):
+            (description.value.length < 10)  ?
+                validate(descriptionMessage , {validation : ['length'] ,option: { length: 10}}) :
+                accepted(descriptionMessage , description.value),
+        status : status.value,
+        priority : priority.value,
+        deadLine : (deadLine.value === "") ?
+            validate(dateMessage, {validation : ['required']}):
+            accepted(dateMessage , deadLine.value)
+    }
+    if (!Object.values(validated).includes(undefined)){
+    await createTask(validated.title, validated.description , validated.status , validated.priority , validated.deadLine);
     closeFormModal();
+    }
 })
 
 async function createTask(title, description, status, priority, deadLine) {
@@ -174,17 +206,42 @@ async function createTask(title, description, status, priority, deadLine) {
     }
 }
 
-async function updateTask() {
+async  function editTask(){
+    let validated = {
+        title:
+            (taskTitle.value === "") ?
+                validate(taskTitleMessage, {validation: ['required']}) :
+                (taskTitle.value.length < 4) ?
+                    validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
+                    accepted(taskTitleMessage, taskTitle.value),
+        description :
+            (description.value === "") ?
+                validate(descriptionMessage , {validation : ['required']}):
+                (description.value.length < 10)  ?
+                    validate(descriptionMessage , {validation : ['length'] ,option: { length: 10}}) :
+                    accepted(descriptionMessage , description.value),
+        status : status.value,
+        priority : document.querySelector("input[name=priority]:checked").value,
+        deadLine : (deadLine.value === "") ?
+            validate(dateMessage, {validation : ['required']}):
+            accepted(dateMessage , deadLine.value)
+    }
+    if (!Object.values(validated).includes(undefined)){
+        await updateTask(task.id, validated.title, validated.description , validated.status , validated.priority , validated.deadLine);
+        closeFormModal();
+    }
+}
+async function updateTask(id , title , description , status , priority , deadLine) {
     try {
         const response = await fetch(`${API_URL}/${task.id}`, {
             method: "PUT",
             headers: headers,
             body: JSON.stringify({
-                title: taskTitle.value,
-                description: description.value,
-                status: status.value,
-                priority: document.querySelector("input[name=priority]:checked").value,
-                deadLine: deadLine.value
+                title,
+                description,
+                status,
+                priority,
+                deadLine
             })
         });
         if (!response.ok) {
@@ -224,8 +281,8 @@ async function renderTasks() {
     toDoTable.innerHTML = "";
     await getTasks();
     tasks.forEach((item) => {
-        let {bgPriority , textPriority} = priorityColor[item.priority];
-        let {bgStatus , textStatus} = statusColor[item.status];
+        let {bgPriority, textPriority} = priorityColor[item.priority];
+        let {bgStatus, textStatus} = statusColor[item.status];
         toDoTable.innerHTML += `
          <tr>
                 <td class="border border-gray-500 p-2">${item.title}</td>
@@ -256,3 +313,21 @@ renderTasks()
     .catch(e => {
         console.log(e)
     })
+
+
+function validate(inputMessage, options) {
+    let {validation = [], option: {length} = {}} = options;
+    let messages = []
+    if (validation.includes('required')) {
+        messages.push("this field is required");
+    }
+    if (validation.includes('length')) {
+        messages.push("min length is " + length);
+    }
+    inputMessage.innerHTML = messages.join(" . ");
+}
+
+function accepted(inputMessage, value) {
+    inputMessage.innerHTML = ""
+    return value;
+}
