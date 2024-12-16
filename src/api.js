@@ -23,7 +23,7 @@ const editTaskBtn = document.getElementById('editTaskBtn');
 const showTaskModal = document.getElementById('showTaskModal');
 const messageBox = document.getElementById('messageBox');
 const messages = document.querySelectorAll("span[id$=message]");
-
+const loading = document.getElementById("loading")
 
 const statusColor = {
     toDo: {bgStatus: "bg-[#DC2626]", textStatus: "text-white"},
@@ -72,15 +72,13 @@ function closeFormModal() {
     taskFormModal.classList.add("invisible", "opacity-0", 'hidden');
     overlay.classList.add("invisible", "opacity-0", "hidden");
     clearMessages();
+    toDoForm.reset();
 }
 
-function clearMessages(){
-    messages.forEach(item =>{
+function clearMessages() {
+    messages.forEach(item => {
         item.innerHTML = "";
     })
-}
-function loading(){
-
 }
 
 
@@ -101,10 +99,15 @@ async function getTasks() {
         }
     } catch (err) {
         console.log(err)
+    } finally {
+        loading.classList.remove("flex");
+        loading.classList.add("hidden");
     }
 }
 
 async function showTask(id) {
+    loading.classList.remove("hidden");
+    loading.classList.add("flex");
     try {
         const response = await fetch(`${API_URL}/${id}`, {
             headers: headers,
@@ -120,6 +123,9 @@ async function showTask(id) {
         }
     } catch (e) {
         console.log(e);
+    } finally {
+        loading.classList.remove("flex");
+        loading.classList.add("hidden");
     }
 }
 
@@ -153,31 +159,34 @@ function closeTaskShow() {
     showTaskModal.classList.add('hidden');
 }
 
-taskFormModal.addEventListener("submit", async (e) => {
+toDoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     let {taskTitle, description, status, priority, deadLine} = e.target;
     let validated = {
         title:
             (taskTitle.value === "") ?
                 validate(taskTitleMessage, {validation: ['required']}) :
-            (taskTitle.value.length < 4) ?
-                validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
-               accepted(taskTitleMessage, taskTitle.value),
-        description :
+                (taskTitle.value.length < 4) ?
+                    validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
+                    accepted(taskTitleMessage, taskTitle.value),
+        description:
             (description.value === "") ?
-                validate(descriptionMessage , {validation : ['required']}):
-            (description.value.length < 10)  ?
-                validate(descriptionMessage , {validation : ['length'] ,option: { length: 10}}) :
-                accepted(descriptionMessage , description.value),
-        status : status.value,
-        priority : priority.value,
-        deadLine : (deadLine.value === "") ?
-            validate(dateMessage, {validation : ['required']}):
-            accepted(dateMessage , deadLine.value)
+                validate(descriptionMessage, {validation: ['required']}) :
+                (description.value.length < 10) ?
+                    validate(descriptionMessage, {validation: ['length'], option: {length: 10}}) :
+                    accepted(descriptionMessage, description.value),
+        status: status.value,
+        priority: priority.value,
+        deadLine: (deadLine.value === "") ?
+            validate(dateMessage, {validation: ['required']}) :
+            accepted(dateMessage, deadLine.value)
     }
-    if (!Object.values(validated).includes(undefined)){
-    await createTask(validated.title, validated.description , validated.status , validated.priority , validated.deadLine);
-    closeFormModal();
+    if (!Object.values(validated).includes(undefined)) {
+        loading.classList.remove("hidden");
+        loading.classList.add("flex");
+        await createTask(validated.title, validated.description, validated.status, validated.priority, validated.deadLine);
+        closeFormModal();
+        toDoForm.reset();
     }
 })
 
@@ -206,7 +215,7 @@ async function createTask(title, description, status, priority, deadLine) {
     }
 }
 
-async  function editTask(){
+async function editTask() {
     let validated = {
         title:
             (taskTitle.value === "") ?
@@ -214,24 +223,26 @@ async  function editTask(){
                 (taskTitle.value.length < 4) ?
                     validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
                     accepted(taskTitleMessage, taskTitle.value),
-        description :
+        description:
             (description.value === "") ?
-                validate(descriptionMessage , {validation : ['required']}):
-                (description.value.length < 10)  ?
-                    validate(descriptionMessage , {validation : ['length'] ,option: { length: 10}}) :
-                    accepted(descriptionMessage , description.value),
-        status : status.value,
-        priority : document.querySelector("input[name=priority]:checked").value,
-        deadLine : (deadLine.value === "") ?
-            validate(dateMessage, {validation : ['required']}):
-            accepted(dateMessage , deadLine.value)
+                validate(descriptionMessage, {validation: ['required']}) :
+                (description.value.length < 10) ?
+                    validate(descriptionMessage, {validation: ['length'], option: {length: 10}}) :
+                    accepted(descriptionMessage, description.value),
+        status: status.value,
+        priority: document.querySelector("input[name=priority]:checked").value,
+        deadLine: (deadLine.value === "") ?
+            validate(dateMessage, {validation: ['required']}) :
+            accepted(dateMessage, deadLine.value)
     }
-    if (!Object.values(validated).includes(undefined)){
-        await updateTask(task.id, validated.title, validated.description , validated.status , validated.priority , validated.deadLine);
+    if (!Object.values(validated).includes(undefined)) {
+        loading.classList.remove("hidden");
+        loading.classList.add("flex");
+        await updateTask(task.id, validated.title, validated.description, validated.status, validated.priority, validated.deadLine);
         closeFormModal();
     }
 }
-async function updateTask(id , title , description , status , priority , deadLine) {
+async function updateTask(id, title, description, status, priority, deadLine) {
     try {
         const response = await fetch(`${API_URL}/${task.id}`, {
             method: "PUT",
@@ -279,6 +290,8 @@ async function deleteTask(id) {
 
 async function renderTasks() {
     toDoTable.innerHTML = "";
+    loading.classList.remove("hidden");
+    loading.classList.add("flex");
     await getTasks();
     tasks.forEach((item) => {
         let {bgPriority, textPriority} = priorityColor[item.priority];
