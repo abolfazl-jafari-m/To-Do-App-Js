@@ -10,15 +10,15 @@
 </head>
 <body>
 <div class="w-full">
-    <header class="w-full bg-violet-800 flex justify-between items-center p-3">
+    <header class="flex items-center justify-between w-full p-3 bg-violet-800">
         <div class="flex items-center gap-2">
             <img src="./assets/Image/list-ul-alt-svgrepo-com.svg" alt="logo" class="w-7 ">
-            <h1 class="text-white text-xl">My To Do Tasks</h1>
+            <h1 class="text-xl text-white">My To Do Tasks</h1>
         </div>
         <div class="flex items-center gap-1.5 w-1/3 justify-end">
-            <div class="bg-purple-700 p-1  text-white hidden sm:flex rounded-sm  items-center gap-1 w-3/5">
+            <div class="items-center hidden w-3/5 gap-1 p-1 text-white bg-purple-700 rounded-sm sm:flex">
                 <img src="./assets/Image/search-alt-1-svgrepo-com.svg" alt="search" class="w-4">
-                <input type="text" placeholder="Search" class="outline-0 border-0 bg-transparent text-md">
+                <input type="text" placeholder="Search" class="bg-transparent border-0 outline-0 text-md">
             </div>
             <button><img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6"></button>
             <button onclick="showFormModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6">
@@ -27,31 +27,31 @@
     </header>
 
     <main class="w-full">
-        <table class="w-full  text-sm sm:text-md border-collapse p-2">
+        <table class="w-full p-2 text-sm border-collapse sm:text-md">
             <thead class="font-semibold">
             <tr>
-                <th class="border border-gray-500 p-2">Task Name</th>
-                <th class="border border-gray-500 p-2">Priority</th>
-                <th class="border border-gray-500 p-2">Status</th>
-                <th class="border border-gray-500 p-2 hidden  sm:table-cell">DeadLine</th>
-                <th class="border border-gray-500 p-2">Operation</th>
+                <th class="p-2 border border-gray-500">Task Name</th>
+                <th class="p-2 border border-gray-500">Priority</th>
+                <th class="p-2 border border-gray-500">Status</th>
+                <th class="hidden p-2 border border-gray-500 sm:table-cell">DeadLine</th>
+                <th class="p-2 border border-gray-500">Operation</th>
             </tr>
             </thead>
             <tbody class="text-center " id="toDoTable">
             <tr>
-                <td class="border border-gray-500 p-2">Walk the Dog</td>
-                <td class="border border-gray-500 p-2"><span
+                <td class="p-2 border border-gray-500">Walk the Dog</td>
+                <td class="p-2 border border-gray-500"><span
                         class="px-2 py-1.5 bg-gray-400 rounded-2xl font-semibold text-xs">Low</span></td>
-                <td class="border border-gray-500 p-2"><span
+                <td class="p-2 border border-gray-500"><span
                         class="px-2 py-1.5 bg-red-700  rounded-2xl text-white font-semibold text-xs">ToDO</span></td>
-                <td class="border border-gray-500 p-2 hidden sm:table-cell"><span
+                <td class="hidden p-2 border border-gray-500 sm:table-cell"><span
                         class="px-2 py-1 border-2 border-blue-300 rounded-2xl">1403/9/12</span></td>
-                <td class="border border-gray-500 p-2">
-                    <button class="bg-red-600 p-1 rounded-md "><img src="./assets/Image/delete-svgrepo-com.svg"
-                                                                    alt="delete" class=" w-4"></button>
-                    <button class="bg-blue-600 p-1 rounded-md "><img src="./assets/Image/pen-f-svgrepo-com.svg"
+                <td class="p-2 border border-gray-500">
+                    <button class="p-1 bg-red-600 rounded-md "><img src="./assets/Image/delete-svgrepo-com.svg"
+                                                                    alt="delete" class="w-4 "></button>
+                    <button class="p-1 bg-blue-600 rounded-md "><img src="./assets/Image/pen-f-svgrepo-com.svg"
                                                                      alt="edit" class="w-4"></button>
-                    <button class="bg-gray-500 p-1 rounded-md "><img src="./assets/Image/eye-svgrepo-com.svg" alt="see"
+                    <button class="p-1 bg-gray-500 rounded-md "><img src="./assets/Image/eye-svgrepo-com.svg" alt="see"
                                                                      class="w-4"></button>
                 </td>
             </tr>
@@ -62,7 +62,7 @@
         <div class="flex justify-between w-full sm:w-[50%] items-center md:w-[40%] ">
             <div>
                 <label for="pagination">Rows Per Page :</label>
-                <select id="pagination" class="outline-0 border-0 px-3">
+                <select id="pagination" class="px-3 border-0 outline-0">
                     <option>ALL</option>
                     <option>5</option>
                     <option>10</option>
@@ -72,8 +72,8 @@
                 1-3 of 3
             </span>
             <div class="flex items-center gap-8">
-                <span><img src="./assets/Image/left-2-svgrepo-com.svg" class=" w-4"></span>
-                <span><img src="./assets/Image/right-2-svgrepo-com.svg" class=" w-4"></span>
+                <span><img src="./assets/Image/left-2-svgrepo-com.svg" class="w-4 "></span>
+                <span><img src="./assets/Image/right-2-svgrepo-com.svg" class="w-4 "></span>
 
             </div>
 
@@ -82,27 +82,27 @@
 
     <div id="taskFormModal"
          class="animate-fadeIn fixed bg-indigo-700 p-8 invisible opacity-0 hidden flex-col justify-center items-center top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-2/5 transition-all duration-100 ease-in">
-        <form class="flex flex-col justify-center items-center gap-8 w-full text-white" id="toDoForm">
-            <div class="flex justify-between w-full items-center">
-                <label for="taskName" class=" font-semibold">Name</label>
+        <form class="flex flex-col items-center justify-center w-full gap-8 text-white" id="toDoForm">
+            <div class="flex items-center justify-between w-full">
+                <label for="taskName" class="font-semibold ">Name</label>
                 <div class="flex flex-col w-[80%] sm:w-[60%] gap-2">
                     <input type="text" placeholder="Please Enter Name of Your Task" id="taskName" name="taskName"
-                           class="w-full bg-transparent border border-gray-400 p-2 outline-0 rounded-md  shadow-md">
-                    <span id="taskName-message" class="text-red-400 text-xs min-h-2"></span>
+                           class="w-full p-2 bg-transparent border border-gray-400 rounded-md shadow-md outline-0">
+                    <span id="taskName-message" class="text-xs text-red-400 min-h-2"></span>
                 </div>
 
             </div>
-            <div class="flex justify-between w-full items-center">
-                <label for="description" class=" font-semibold">Description</label>
+            <div class="flex items-center justify-between w-full">
+                <label for="description" class="font-semibold ">Description</label>
                 <div class="flex flex-col w-[80%] sm:w-[60%] gap-2">
                     <textarea placeholder="Please Describe  Your Task" id="description" name="description"
-                              class="w-full bg-transparent border border-gray-400 p-2 outline-0 rounded-md  shadow-md"></textarea>
-                    <span id="description-message" class="text-red-400 text-xs min-h-2"></span>
+                              class="w-full p-2 bg-transparent border border-gray-400 rounded-md shadow-md outline-0"></textarea>
+                    <span id="description-message" class="text-xs text-red-400 min-h-2"></span>
                 </div>
 
             </div>
-            <div class="flex justify-between w-full items-center">
-                <div class=" font-semibold">
+            <div class="flex items-center justify-between w-full">
+                <div class="font-semibold ">
                     <label>Priority</label>
                 </div>
                 <div class="flex gap-10 items-center justify-center w-[80%] sm:w-[60%]">
@@ -120,47 +120,47 @@
                     </div>
                 </div>
             </div>
-            <div class="w-full flex justify-between">
+            <div class="flex justify-between w-full">
                 <label for="status" class="font-semibold">Status</label>
                 <select id="status" name="status"
-                        class="w-4/5 sm:w-3/5 outline-0 border border-gray-400 rounded-md bg-transparent shadow-xl  p-2">
+                        class="w-4/5 p-2 bg-transparent border border-gray-400 rounded-md shadow-xl sm:w-3/5 outline-0">
                     <option class="text-black" value="toDo">ToDo</option>
                     <option class="text-black " value="Doing">Doing</option>
                     <option class="text-black " value="Done">Done</option>
                 </select>
             </div>
-            <div class="w-full flex justify-between ">
+            <div class="flex justify-between w-full ">
                 <label for="deadLine" class="font-semibold">DeadLine</label>
-                <div class="flex flex-col w-4/5 sm:w-3/5  gap-2">
+                <div class="flex flex-col w-4/5 gap-2 sm:w-3/5">
                     <input type="date" id="deadLine" name="deadLine"
-                           class=" w-full outline-0 border-gray-400 border rounded-md p-2 bg-transparent shadow-xl">
-                    <span id="date-message" class="text-red-400 text-xs min-h-2 w-full"></span>
+                           class="w-full p-2 bg-transparent border border-gray-400 rounded-md shadow-xl outline-0">
+                    <span id="date-message" class="w-full text-xs text-red-400 min-h-2"></span>
                 </div>
             </div>
-            <div class="flex gap-10 items-center">
+            <div class="flex items-center gap-10">
                 <button type="submit" id="addTaskBtn"
-                        class="bg-green-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 transition-all ease-in duration-100">
+                        class="px-4 py-2 text-white transition-all duration-100 ease-in bg-green-800 rounded-md shadow-md hover:bg-green-600">
                     Save
                 </button>
                 <button type="button" id="editTaskBtn" onclick="updateTask()"
-                        class="hidden bg-blue-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition-all ease-in duration-100">
+                        class="hidden px-4 py-2 text-white transition-all duration-100 ease-in bg-blue-800 rounded-md shadow-md hover:bg-blue-600">
                     Update
                 </button>
                 <button onclick="closeFormModal()" type="button"
-                        class="bg-red-800 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-600 transition-all ease-in duration-100">
+                        class="px-4 py-2 text-white transition-all duration-100 ease-in bg-red-800 rounded-md shadow-md hover:bg-red-600">
                     Cancel
                 </button>
             </div>
         </form>
     </div>
     <div id="overlay"
-         class="hidden invisible opacity-0 bg-gray-600  z-10 fixed top-0 left-0 w-full h-full transition-all duration-100">
+         class="fixed top-0 left-0 z-10 invisible hidden w-full h-full transition-all duration-100 bg-gray-600 opacity-0">
     </div>
     <div id="showTaskModal"
          class="animate-fadeIn fixed bg-gray-700 p-8  text-white hidden flex-col gap-10 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-2/5 transition-all duration-500 ease-in">
     </div>
 
-    <span id="messageBox" class="invisible opacity-0 fixed bottom-5 right-5 shadow-2xl text-sm shadow-green-400 rounded-lg bg-green-700 px-5 py-2 text-white transition-all duration-500 ease-in">Your message</span>
+    <span id="messageBox" class="fixed invisible px-5 py-2 text-sm text-white transition-all duration-500 ease-in bg-green-700 rounded-lg shadow-2xl opacity-0 bottom-5 right-5 shadow-green-400">Your message</span>
 </div>
 <script src="../src/script.js"></script>
 
