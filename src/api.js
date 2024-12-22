@@ -30,6 +30,8 @@ const filterBtn = document.getElementById('filter-btn');
 const filterModal = document.getElementById('filter-modal');
 const filterForm = document.getElementById("filter-form");
 const searchInput = document.getElementById('search');
+const rowPerPage = document.getElementById('pagination');
+const pageNumber = document.getElementById('page-number');
 
 const statusColor = {
     toDo: {bgStatus: "bg-[#DC2626]", textStatus: "text-white"},
@@ -45,6 +47,8 @@ const priorityColor = {
 
 let tasks = [];
 let task = null;
+let currentPage = null;
+let tasksPerPage = [];
 
 //DOM
 toDoForm.addEventListener("submit", (e) => {
@@ -258,6 +262,47 @@ function searchTasks(searching) {
         return item.title.startsWith(searching);
     });
     renderTasks(result);
+}
+
+
+rowPerPage.addEventListener('change', () => {
+    tasksPerPage = [];
+    currentPage = 0;
+    if (rowPerPage.value === "all" || rowPerPage.value === "---"){
+        tasksPerPage.push(tasks);
+        pagination(tasksPerPage ,currentPage);
+    }else{
+        for (let i = 0; i <= tasks.length; i += Number(rowPerPage.value)) {
+            tasksPerPage.push(tasks.slice(i, i + Number(rowPerPage.value)));
+        }
+        pagination(tasksPerPage , currentPage);
+    }
+})
+
+function numberPage(index, perPage) {
+    if (rowPerPage.value === "all" || rowPerPage.value === "---"){
+        perPage = tasks.length;
+    }
+    pageNumber.innerHTML = `${index} of ${Math.ceil(tasks.length / perPage)}`;
+}
+
+function nextPage() {
+    if (currentPage < tasksPerPage.length-1){
+        currentPage++
+        pagination(tasksPerPage , currentPage);
+    }
+}
+
+function prevPage() {
+    if (currentPage > 0 ){
+        currentPage--;
+        pagination(tasksPerPage , currentPage);
+    }
+}
+
+function pagination(arr , current) {
+    renderTasks(arr[current]);
+    numberPage(arr.indexOf(arr[current]) + 1, Number(rowPerPage.value));
 }
 
 //Fetch Requests
