@@ -20,7 +20,44 @@
                 <img src="./assets/Image/search-alt-1-svgrepo-com.svg" alt="search" class="w-4">
                 <input type="text" placeholder="Search" class="bg-transparent border-0 outline-0 text-md">
             </div>
-            <button><img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6"></button>
+            <div class="relative cursor-pointer ">
+                <img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6" alt="filer">
+                <div class="hidden  absolute top-7 right-1  bg-zinc-800 rounded-md shadow-xl animate-fadeIn p-4" id="filter-modal">
+                        <form id="filter-form" class="text-white font-[poppins]">
+                            <h6 class="font-bold uppercase my-2">Status</h6>
+                            <div class="flex gap-3 text-sm ">
+                                <div class="  text-white border-[3px] border-rose-800 rounded-md px-4 py-1 flex gap-3 items-center">
+                                    <label class="uppercase">toDo</label>
+                                    <input type="radio" name="status" value="toDo" class="appearance-none w-3 h-3 checked:bg-rose-800 rounded-full border-2 border-rose-800 checked:ring-2 checked:ring-rose-800 checked:ring-offset-2 ">
+                                </div>
+                                <div class="bg-transparent border-[3px] border-rose-800 rounded-md px-4 py-1 flex gap-3 items-center">
+                                    <label class="uppercase">doing</label>
+                                    <input type="radio" name="status" value="doing" class="appearance-none w-3 h-3 checked:bg-rose-800 rounded-full border-2 border-rose-800 checked:ring-2 checked:ring-rose-800 checked:ring-offset-2 ">
+                                </div>
+                                <div class="bg-transparent border-[3px] border-rose-800 rounded-md px-4 py-1 flex gap-3 items-center">
+                                    <label class="uppercase">done</label>
+                                    <input type="radio" name="status" value="done" class="appearance-none w-3 h-3 checked:bg-rose-800 rounded-full border-2 border-rose-800 checked:ring-2 checked:ring-rose-800 checked:ring-offset-2 ">
+                                </div>
+                            </div>
+                            <h6 class="font-bold  uppercase my-2">Priority</h6>
+                            <div class="flex gap-3 text-sm">
+                                <div class="  text-white border-[3px] border-sky-800 rounded-md px-4 py-1 flex gap-3 items-center">
+                                    <label class="uppercase">low</label>
+                                    <input type="radio" name="priority" value="low" class="appearance-none w-3 h-3 checked:bg-sky-800 rounded-full border-2 border-sky-800 checked:ring-2 checked:ring-sky-800 checked:ring-offset-2 ">
+                                </div>
+                                <div class="bg-transparent border-[3px] border-sky-800 rounded-md px-4 py-1 flex gap-3 items-center">
+                                    <label class="uppercase">medium</label>
+                                    <input type="radio" name="priority" value="medium" class="appearance-none w-3 h-3 checked:bg-sky-800 rounded-full border-2 border-sky-800 checked:ring-2 checked:ring-sky-800 checked:ring-offset-2 ">
+                                </div>
+                                <div class="bg-transparent border-[3px] border-sky-800 rounded-md px-4 py-1 flex gap-3 items-center">
+                                    <label class="uppercase">high</label>
+                                    <input type="radio" name="priority" value="high" class="appearance-none w-3 h-3 checked:bg-sky-800 rounded-full border-2 border-sky-800 checked:ring-2 checked:ring-sky-800 checked:ring-offset-2 ">
+                                </div>
+                            </div>
+                            <button class="bg-blue-500 px-6 py-1 rounded-md shadow-xl mt-6 text-sm">Filter</button>
+                        </form>
+                </div>
+            </div>
             <button onclick="showFormModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6">
             </button>
         </div>
@@ -159,10 +196,12 @@
     <div id="showTaskModal"
          class="animate-fadeIn fixed bg-gray-700 p-8  text-white hidden flex-col gap-10 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] drop-shadow-xl rounded-lg z-20 w-[90%] sm:w-[60%] lg:w-2/5 transition-all duration-500 ease-in">
     </div>
-    <div id="loading" class="animate-fadeIn absolute w-full h-screen hidden justify-center items-center bg-black top-0 left-0 opacity-40 z-30">
+    <div id="loading"
+         class="animate-fadeIn absolute w-full h-screen hidden justify-center items-center bg-black top-0 left-0 opacity-40 z-30">
         <img src="./assets/Image/Animation%20-%201734367941115.gif" class="w-64">
     </div>
-    <span id="messageBox" class="fixed invisible px-5 py-2 text-sm text-white transition-all duration-500 ease-in bg-green-700 rounded-lg shadow-2xl opacity-0 bottom-5 right-5 shadow-green-400">Your message</span>
+    <span id="messageBox"
+          class="fixed invisible px-5 py-2 text-sm text-white transition-all duration-500 ease-in bg-green-700 rounded-lg shadow-2xl opacity-0 bottom-5 right-5 shadow-green-400">Your message</span>
 </div>
 <!--<script src="../src/script.js"></script>-->
 <script src="../src/api.js"></script>
