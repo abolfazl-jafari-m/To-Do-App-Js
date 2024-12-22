@@ -26,6 +26,10 @@ const messages = document.querySelectorAll("span[id$=message]");
 const loading = document.getElementById("loading");
 const errorBox = document.getElementById("error-box");
 const errorMessage = document.getElementById('error-message');
+const filterBtn = document.getElementById('filter-btn');
+const filterModal = document.getElementById('filter-modal');
+const filterForm = document.getElementById("filter-form");
+const searchInput = document.getElementById('search');
 
 const statusColor = {
     toDo: {bgStatus: "bg-[#DC2626]", textStatus: "text-white"},
@@ -217,6 +221,34 @@ function errorModal() {
     }, 5000);
 }
 
+function toggleFilterModal() {
+    filterModal.classList.toggle("hidden");
+}
+
+filterForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let {statusFilter , priorityFilter} = e.target;
+    filterTasks(statusFilter.value, priorityFilter.value);
+})
+
+
+function filterTasks(status, priority) {
+    let filtered ;
+    if (status && priority){
+        filtered = tasks.filter((item) => {
+            return (item.status === status && item.priority === priority);
+        })
+    }else if(status || priority){
+        filtered = tasks.filter((item)=>{
+            return (item.status === status || item.priority === priority);
+        })
+    }else{
+        filtered = tasks;
+    }
+    renderTasks(filtered);
+}
+
+
 //Fetch Requests
 async function getTasks() {
     loading.classList.remove("hidden");
@@ -236,9 +268,9 @@ async function getTasks() {
             tasks = result.records;
         }
     } catch (err) {
-        if (err instanceof  TypeError){
+        if (err instanceof TypeError) {
             errorHandler("Fetch Operation is UnSuccessful");
-        }else{
+        } else {
             errorHandler(err);
         }
     } finally {
