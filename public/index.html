@@ -58,7 +58,7 @@
                         </form>
                 </div>
             </div>
-            <button onclick="showFormModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6">
+            <button onclick="showFormModal(null)"><img src="./assets/Image/plus-rectangle-svgrepo-com.svg" class="w-6" alt="addBtn">
             </button>
         </div>
     </header>
@@ -199,6 +199,10 @@
     <div id="loading"
          class="animate-fadeIn absolute w-full h-screen hidden justify-center items-center bg-black top-0 left-0 opacity-40 z-30">
         <img src="./assets/Image/Animation%20-%201734367941115.gif" class="w-64">
+    </div>
+    <div id="error-box" class="hidden animate-fadeIn fixed top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] bg-rose-700/95 rounded-lg shadow-xl z-20 px-10 py-4 text-center">
+        <img src="./assets/Image/rb_63445.png" alt="error-image" class="w-96">
+        <span id="error-message" class="text-white font-[poppins]">Your Request is Unsuccessful .Please Try Later</span>
     </div>
     <span id="messageBox"
           class="fixed invisible px-5 py-2 text-sm text-white transition-all duration-500 ease-in bg-green-700 rounded-lg shadow-2xl opacity-0 bottom-5 right-5 shadow-green-400">Your message</span>
