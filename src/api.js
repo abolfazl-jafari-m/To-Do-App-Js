@@ -227,27 +227,38 @@ function toggleFilterModal() {
 
 filterForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    let {statusFilter , priorityFilter} = e.target;
+    let {statusFilter, priorityFilter} = e.target;
     filterTasks(statusFilter.value, priorityFilter.value);
 })
 
-
 function filterTasks(status, priority) {
-    let filtered ;
-    if (status && priority){
+    let filtered;
+    if (status && priority) {
         filtered = tasks.filter((item) => {
             return (item.status === status && item.priority === priority);
         })
-    }else if(status || priority){
-        filtered = tasks.filter((item)=>{
+    } else if (status || priority) {
+        filtered = tasks.filter((item) => {
             return (item.status === status || item.priority === priority);
         })
-    }else{
+    } else {
         filtered = tasks;
     }
     renderTasks(filtered);
 }
 
+
+searchInput.addEventListener("input", (e) => {
+    searchTasks(searchInput.value);
+});
+
+function searchTasks(searching) {
+    let result = tasks.filter(item => {
+        // return item.title.includes(searching);
+        return item.title.startsWith(searching);
+    });
+    renderTasks(result);
+}
 
 //Fetch Requests
 async function getTasks() {
