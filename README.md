@@ -9,5 +9,5 @@
 <li>Html</li>
 <li>Css</li>
 <li>Tailwind Css</li>
-<li>Vanilla Js</li>
+<li>Javascript</li>
 </ul>
