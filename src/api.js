@@ -47,6 +47,7 @@ const priorityColor = {
 
 let tasks = [];
 let state = [];
+let tasksPerPage = [];
 let task = null;
 let currentPage = 0;
 let perPage = "All";
@@ -79,7 +80,7 @@ toDoForm.addEventListener("submit", (e) => {
         loading.classList.add("flex");
         createTask(validated.title, validated.description, validated.status, validated.priority, validated.deadLine)
             .then((res) => {
-                tasks.push(res)
+                tasks.unshift(res)
             }).finally(() => {
             loading.classList.add("hidden");
             loading.classList.remove("flex");
@@ -173,8 +174,9 @@ function deleteBtnHandler(id) {
     loading.classList.add("flex");
     deleteTask(id)
         .then((res) => {
-            let index = tasks.findIndex(item => res.id === item.id);
+            let index = tasks.findIndex(item => id === item.id);
             tasks.splice(index, 1);
+            // console.log(tasks , index , res );
             renderTasks(tasks);
         })
         .finally(() => {
@@ -226,7 +228,7 @@ function errorModal() {
     }, 5000);
 }
 
-function toggleFilterModal(){
+function toggleFilterModal() {
     filterModal.classList.toggle("hidden");
 }
 
@@ -243,7 +245,7 @@ filterForm.addEventListener("reset", (e) => {
 
 function filterTasks(status, priority) {
     let filtered;
-    filtered = tasks.filter((item)=>{
+    filtered = tasks.filter((item) => {
         let statusState = (status === "") ? true : (status === item.status);
         let priorityState = (priority === "") ? true : (priority === item.priority);
         return (statusState && priorityState);
@@ -264,32 +266,34 @@ function searchTasks(searching) {
     renderTasks(result);
 }
 
-function pagination(arr , current  , perPage){
-    let taskPerPage = [];
-    if (perPage === "All" || isNaN(perPage)){
+function pagination(arr, current, perPage) {
+    tasksPerPage = [];
+    if (perPage === "All" || isNaN(perPage)) {
         perPage = arr.length;
     }
-    for (let i = 0; i < arr.length ; i+= perPage){
-        taskPerPage.push(arr.slice(i, i+perPage));
+    for (let i = 0; i < arr.length; i += perPage) {
+        tasksPerPage.push(arr.slice(i, i + perPage));
     }
-    pageNumber.innerHTML = `${current+1} of ${Math.ceil(arr.length/perPage)}`
-    return taskPerPage[current];
+    let totalPages =Math.ceil(arr.length / perPage) || 1;
+    pageNumber.innerHTML = `${current + 1} of ${totalPages}`
+    return tasksPerPage[current];
 }
 
-function prevPage(){
-    if (currentPage > 0){
+function prevPage() {
+    if (currentPage > 0) {
         currentPage--;
     }
     renderTasks(tasks);
 }
-function nextPage(){
-    if (currentPage < state.length -1){
+
+function nextPage() {
+    if (currentPage < tasksPerPage.length -1) {
         currentPage++;
     }
     renderTasks(tasks);
 }
 
-rowPerPage.addEventListener("change", ()=>{
+rowPerPage.addEventListener("change", () => {
     currentPage = 0;
     perPage = Number(rowPerPage.value);
     renderTasks(tasks);
@@ -410,7 +414,7 @@ async function updateTask(id, title, description, status, priority, deadLine) {
 
 //render
 function renderTasks(tasks) {
-    state = pagination(tasks , currentPage , perPage);
+    state = pagination(tasks, currentPage, perPage) ?? [];
     toDoTable.innerHTML = "";
     state.forEach((item) => {
         let {bgPriority, textPriority} = priorityColor[item.priority];
