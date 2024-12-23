@@ -46,11 +46,12 @@ const priorityColor = {
 
 
 let tasks = [];
+let state = [];
 let task = null;
-let currentPage = null;
-let tasksPerPage = [];
-
+let currentPage = 0;
+let perPage = "All";
 //DOM
+
 toDoForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let {taskTitle, description, status, priority, deadLine} = e.target;
@@ -263,46 +264,36 @@ function searchTasks(searching) {
     renderTasks(result);
 }
 
-
-rowPerPage.addEventListener('change', () => {
-    tasksPerPage = [];
-    currentPage = 0;
-    if (rowPerPage.value === "all" || rowPerPage.value === "---") {
-        tasksPerPage.push(tasks);
-        pagination(tasksPerPage, currentPage);
-    } else {
-        for (let i = 0; i <= tasks.length; i += Number(rowPerPage.value)) {
-            tasksPerPage.push(tasks.slice(i, i + Number(rowPerPage.value)));
-        }
-        pagination(tasksPerPage, currentPage);
+function pagination(arr , current  , perPage){
+    let taskPerPage = [];
+    if (perPage === "All" || isNaN(perPage)){
+        perPage = arr.length;
     }
-})
-
-function nextPage() {
-    if (currentPage < tasksPerPage.length - 1) {
-        currentPage++
-        pagination(tasksPerPage, currentPage);
+    for (let i = 0; i < arr.length ; i+= perPage){
+        taskPerPage.push(arr.slice(i, i+perPage));
     }
+    pageNumber.innerHTML = `${current+1} of ${Math.ceil(arr.length/perPage)}`
+    return taskPerPage[current];
 }
 
-function prevPage() {
-    if (currentPage > 0) {
+function prevPage(){
+    if (currentPage > 0){
         currentPage--;
-        pagination(tasksPerPage, currentPage);
     }
+    renderTasks(tasks);
+}
+function nextPage(){
+    if (currentPage < state.length -1){
+        currentPage++;
+    }
+    renderTasks(tasks);
 }
 
-function numberPage(index, perPage) {
-    if (rowPerPage.value === "all" || rowPerPage.value === "---") {
-        perPage = tasks.length;
-    }
-    pageNumber.innerHTML = `${index} of ${Math.ceil(tasks.length / perPage)}`;
-}
-
-function pagination(arr, current) {
-    renderTasks(arr[current]);
-    numberPage(arr.indexOf(arr[current]) + 1, Number(rowPerPage.value));
-}
+rowPerPage.addEventListener("change", ()=>{
+    currentPage = 0;
+    perPage = Number(rowPerPage.value);
+    renderTasks(tasks);
+})
 
 //Fetch Requests
 async function getTasks() {
@@ -419,8 +410,9 @@ async function updateTask(id, title, description, status, priority, deadLine) {
 
 //render
 function renderTasks(tasks) {
+    state = pagination(tasks , currentPage , perPage);
     toDoTable.innerHTML = "";
-    tasks.forEach((item) => {
+    state.forEach((item) => {
         let {bgPriority, textPriority} = priorityColor[item.priority];
         let {bgStatus, textStatus} = statusColor[item.status];
         toDoTable.innerHTML += `
