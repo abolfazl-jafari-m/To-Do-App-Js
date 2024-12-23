@@ -58,22 +58,18 @@ toDoForm.addEventListener("submit", (e) => {
     let {taskTitle, description, status, priority, deadLine} = e.target;
     let validated = {
         title:
-            (taskTitle.value === "") ?
-                validate(taskTitleMessage, {validation: ['required']}) :
-                (taskTitle.value.length < 4) ?
-                    validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
-                    accepted(taskTitleMessage, taskTitle.value),
+            (taskTitle.value === "" || taskTitle.value.length < 4) ?
+                validate("required | min:4", taskTitleMessage) :
+                accepted(taskTitle.value, taskTitleMessage),
         description:
-            (description.value === "") ?
-                validate(descriptionMessage, {validation: ['required']}) :
-                (description.value.length < 10) ?
-                    validate(descriptionMessage, {validation: ['length'], option: {length: 10}}) :
-                    accepted(descriptionMessage, description.value),
+            (description.value === "" || description.value.length < 10) ?
+                validate("required | min:10", descriptionMessage) :
+                accepted(description.value, descriptionMessage),
         status: status.value,
         priority: priority.value,
         deadLine: (deadLine.value === "") ?
-            validate(dateMessage, {validation: ['required']}) :
-            accepted(dateMessage, deadLine.value)
+            validate("required", dateMessage) :
+            accepted(deadLine.value, dateMessage)
     }
     if (!Object.values(validated).includes(undefined)) {
         loading.classList.remove("hidden");
@@ -189,21 +185,21 @@ function updateBtnHandler() {
     let validated = {
         title:
             (taskTitle.value === "") ?
-                validate(taskTitleMessage, {validation: ['required']}) :
+                validate("required", taskTitleMessage) :
                 (taskTitle.value.length < 4) ?
-                    validate(taskTitleMessage, {validation: ['length'], option: {length: 4}}) :
-                    accepted(taskTitleMessage, taskTitle.value),
+                    validate("min:4", taskTitleMessage) :
+                    accepted(taskTitle.value, taskTitleMessage),
         description:
             (description.value === "") ?
-                validate(descriptionMessage, {validation: ['required']}) :
+                validate("required", descriptionMessage) :
                 (description.value.length < 10) ?
-                    validate(descriptionMessage, {validation: ['length'], option: {length: 10}}) :
-                    accepted(descriptionMessage, description.value),
+                    validate("min:10", descriptionMessage) :
+                    accepted(description.value, descriptionMessage),
         status: status.value,
         priority: document.querySelector("input[name=priority]:checked").value,
         deadLine: (deadLine.value === "") ?
-            validate(dateMessage, {validation: ['required']}) :
-            accepted(dateMessage, deadLine.value)
+            validate("required", dateMessage) :
+            accepted(deadLine.value, dateMessage)
     }
     if (!Object.values(validated).includes(undefined)) {
         loading.classList.remove("hidden");
@@ -274,7 +270,7 @@ function pagination(arr, current, perPage) {
     for (let i = 0; i < arr.length; i += perPage) {
         tasksPerPage.push(arr.slice(i, i + perPage));
     }
-    let totalPages =Math.ceil(arr.length / perPage) || 1;
+    let totalPages = Math.ceil(arr.length / perPage) || 1;
     pageNumber.innerHTML = `${current + 1} of ${totalPages}`
     return tasksPerPage[current];
 }
@@ -287,7 +283,7 @@ function prevPage() {
 }
 
 function nextPage() {
-    if (currentPage < tasksPerPage.length -1) {
+    if (currentPage < tasksPerPage.length - 1) {
         currentPage++;
     }
     renderTasks(tasks);
@@ -301,8 +297,6 @@ rowPerPage.addEventListener("change", () => {
 
 //Fetch Requests
 async function getTasks() {
-    loading.classList.remove("hidden");
-    loading.classList.add("flex");
     try {
         const response = await fetch(API_URL, {
             method: "GET",
@@ -324,9 +318,6 @@ async function getTasks() {
         } else {
             errorHandler(err);
         }
-    } finally {
-        loading.classList.remove("flex");
-        loading.classList.add("hidden");
     }
 }
 
@@ -453,19 +444,27 @@ function clearMessages() {
     })
 }
 
-function validate(inputMessage, options) {
-    let {validation = [], option: {length} = {}} = options;
+function validate(rules, inputMessage) {
     let messages = []
-    if (validation.includes('required')) {
-        messages.push("this field is required");
-    }
-    if (validation.includes('length')) {
-        messages.push("min length is " + length);
-    }
+    let options = [];
+    rules = rules.split("|");
+    rules = rules.map(item => item.trim());
+    rules.forEach(item => {
+        let [name, rule = ""] = item.split(":");
+        options.push({name, rule});
+    })
+    options.forEach(item => {
+        if (item.name === "required") {
+            messages.push("this field is required");
+        }
+        if (item.name === "min") {
+            messages.push("min length is " + item.rule);
+        }
+    })
     inputMessage.innerHTML = messages.join(" . ");
 }
 
-function accepted(inputMessage, value) {
+function accepted(value, inputMessage) {
     inputMessage.innerHTML = ""
     return value;
 }
@@ -490,10 +489,15 @@ function errorHandler(err) {
 
 //initial Function
 function startProject() {
+    loading.classList.remove("hidden");
+    loading.classList.add("flex");
     getTasks()
         .then(() => {
             renderTasks(tasks)
-        })
+        }).finally(() => {
+        loading.classList.remove("flex");
+        loading.classList.add("hidden");
+    })
 }
 
 startProject();
