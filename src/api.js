@@ -316,6 +316,7 @@ async function getTasks() {
         } else {
             const result = await response.json();
             tasks = result.records;
+            tasks.reverse();
         }
     } catch (err) {
         if (err instanceof TypeError) {
