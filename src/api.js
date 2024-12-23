@@ -44,15 +44,15 @@ const priorityColor = {
     high: {bgPriority: "bg-[#DC2626]", textPriority: "text-white"}
 }
 
-
 let tasks = [];
-let state = [];
 let tasksPerPage = [];
 let task = null;
 let currentPage = 0;
 let perPage = "All";
-//DOM
 
+
+
+/////////////DOM
 toDoForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let {taskTitle, description, status, priority, deadLine} = e.target;
@@ -228,6 +228,8 @@ function toggleFilterModal() {
     filterModal.classList.toggle("hidden");
 }
 
+
+//////Functionality
 filterForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let {statusFilter, priorityFilter} = e.target;
@@ -295,7 +297,7 @@ rowPerPage.addEventListener("change", () => {
     renderTasks(tasks);
 })
 
-//Fetch Requests
+/////////Fetch Requests
 async function getTasks() {
     try {
         const response = await fetch(API_URL, {
@@ -403,12 +405,11 @@ async function updateTask(id, title, description, status, priority, deadLine) {
     }
 }
 
-
-//render
+////////Render
 function renderTasks(tasks) {
-    state = pagination(tasks, currentPage, perPage) ?? [];
+    let result = pagination(tasks, currentPage, perPage) ?? [];
     toDoTable.innerHTML = "";
-    state.forEach((item) => {
+    result.forEach((item) => {
         let {bgPriority, textPriority} = priorityColor[item.priority];
         let {bgStatus, textStatus} = statusColor[item.status];
         toDoTable.innerHTML += `
@@ -437,7 +438,7 @@ function renderTasks(tasks) {
     });
 }
 
-//Helper Function
+////////Helper Function
 function clearMessages() {
     messages.forEach(item => {
         item.innerHTML = "";
@@ -487,13 +488,13 @@ function errorHandler(err) {
 }
 
 
-//initial Function
+////////initial Function
 function startProject() {
     loading.classList.remove("hidden");
     loading.classList.add("flex");
     getTasks()
         .then(() => {
-            renderTasks(tasks)
+            renderTasks(tasks);
         }).finally(() => {
         loading.classList.remove("flex");
         loading.classList.add("hidden");
