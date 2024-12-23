@@ -22,10 +22,10 @@
             </div>
             <div class="relative cursor-pointer ">
                 <img src="./assets/Image/filter-fill-svgrepo-com.svg" class="w-6" alt="filer" id="filter-btn" onclick="toggleFilterModal()">
-                <div class="hidden  absolute top-7 right-1  bg-zinc-800 rounded-md shadow-xl animate-fadeIn p-4" id="filter-modal">
-                        <form id="filter-form" class="text-white font-[poppins]">
-                            <h6 class="font-bold uppercase my-2">Status</h6>
-                            <div class="flex gap-3 text-sm ">
+                <div class="hidden  absolute top-11 right-0  bg-[#101820] rounded-md shadow-2xl animate-fadeIn  p-4 transition-all duration-500" id="filter-modal">
+                        <form id="filter-form" class="text-white font-[poppins] flex flex-col gap-1">
+                            <h6 class="font-bold uppercase text-xs">Status</h6>
+                            <div class="flex gap-3  text-xs justify-center">
                                 <div class="  text-white border-[3px] border-rose-800 rounded-md px-4 py-1 flex gap-3 items-center">
                                     <label class="uppercase">toDo</label>
                                     <input type="radio" name="statusFilter" value="toDo" class="appearance-none w-3 h-3 checked:bg-rose-800 rounded-full border-2 border-rose-800 checked:ring-2 checked:ring-rose-800 checked:ring-offset-2 ">
@@ -39,8 +39,8 @@
                                     <input type="radio" name="statusFilter" value="Done" class="appearance-none w-3 h-3 checked:bg-rose-800 rounded-full border-2 border-rose-800 checked:ring-2 checked:ring-rose-800 checked:ring-offset-2 ">
                                 </div>
                             </div>
-                            <h6 class="font-bold  uppercase my-2">Priority</h6>
-                            <div class="flex gap-3 text-sm">
+                            <h6 class="font-bold  uppercase text-xs mt-2">Priority</h6>
+                            <div class="flex gap-3 text-xs justify-center">
                                 <div class="  text-white border-[3px] border-sky-800 rounded-md px-4 py-1 flex gap-3 items-center">
                                     <label class="uppercase">low</label>
                                     <input type="radio" name="priorityFilter" value="low" class="appearance-none w-3 h-3 checked:bg-sky-800 rounded-full border-2 border-sky-800 checked:ring-2 checked:ring-sky-800 checked:ring-offset-2 ">
@@ -54,8 +54,10 @@
                                     <input type="radio" name="priorityFilter" value="high" class="appearance-none w-3 h-3 checked:bg-sky-800 rounded-full border-2 border-sky-800 checked:ring-2 checked:ring-sky-800 checked:ring-offset-2 ">
                                 </div>
                             </div>
-                            <button type="submit" class="bg-blue-500 px-6 py-1 rounded-md shadow-xl mt-6 text-sm">Filter</button>
-                            <button type="reset" class="bg-neutral-500 px-6 py-1 rounded-md shadow-xl mt-6 text-sm">Reset</button>
+                            <div class="flex gap-2 mt-4 justify-center w-full">
+                                <button type="submit" class="bg-yellow-400 text-black px-4 py-1 rounded-md shadow-xl text-sm flex-1">Filter</button>
+                                <button type="reset" class="bg-neutral-700 text-white px-4 py-1 rounded-md shadow-xl text-sm">Clear</button>
+                            </div>
                         </form>
                 </div>
             </div>

@@ -225,7 +225,7 @@ function errorModal() {
     }, 5000);
 }
 
-function toggleFilterModal() {
+function toggleFilterModal(){
     filterModal.classList.toggle("hidden");
 }
 
@@ -233,21 +233,20 @@ filterForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let {statusFilter, priorityFilter} = e.target;
     filterTasks(statusFilter.value, priorityFilter.value);
-})
+});
+
+filterForm.addEventListener("reset", (e) => {
+    filterTasks("", "");
+});
+
 
 function filterTasks(status, priority) {
     let filtered;
-    if (status && priority) {
-        filtered = tasks.filter((item) => {
-            return (item.status === status && item.priority === priority);
-        })
-    } else if (status || priority) {
-        filtered = tasks.filter((item) => {
-            return (item.status === status || item.priority === priority);
-        })
-    } else {
-        filtered = tasks;
-    }
+    filtered = tasks.filter((item)=>{
+        let statusState = (status === "") ? true : (status === item.status);
+        let priorityState = (priority === "") ? true : (priority === item.priority);
+        return (statusState && priorityState);
+    })
     renderTasks(filtered);
 }
 
