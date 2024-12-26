@@ -51,7 +51,6 @@ let currentPage = 0;
 let perPage = "All";
 
 
-
 /////////////DOM
 toDoForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -232,21 +231,22 @@ function toggleFilterModal() {
 //////Functionality
 filterForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    let {statusFilter, priorityFilter} = e.target;
-    filterTasks(statusFilter.value, priorityFilter.value);
+    let {statusFilter, priorityFilter, dateFilter} = e.target;
+    filterTasks(statusFilter.value, priorityFilter.value, dateFilter.value);
 });
 
 filterForm.addEventListener("reset", (e) => {
-    filterTasks("", "");
+    filterTasks("", "", "");
 });
 
 
-function filterTasks(status, priority) {
+function filterTasks(status, priority, deadLine) {
     let filtered;
     filtered = tasks.filter((item) => {
         let statusState = (status === "") ? true : (status === item.status);
         let priorityState = (priority === "") ? true : (priority === item.priority);
-        return (statusState && priorityState);
+        let deadLineState = (deadLine === "") ? true : Date.parse(deadLine) <= Date.parse(item.deadLine);
+        return (statusState && priorityState && deadLineState);
     })
     renderTasks(filtered);
 }
